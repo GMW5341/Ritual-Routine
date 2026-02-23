@@ -1,10 +1,10 @@
 'use client';
 
 import { useMemo } from 'react';
-import { format } from 'date-fns';
 import { HabitStore, ViewPeriod, HabitStats } from '@/lib/types';
 import { getDailyStats, getMonthlyStats, getQuarterlyStats, getYearlyStats, getStreakDays } from '@/lib/stats';
 import TrendChart from './TrendChart';
+import WeeklyHeatmap from './WeeklyHeatmap';
 
 interface Props {
   store: HabitStore;
@@ -40,10 +40,6 @@ export default function Dashboard({ store, period, onPeriodChange }: Props) {
     return Math.round(stats.reduce((sum, s) => sum + s.overallRate, 0) / stats.length);
   }, [stats]);
 
-  const topHabits = useMemo(() => {
-    return [...stats].sort((a, b) => b.overallRate - a.overallRate).slice(0, 3);
-  }, [stats]);
-
   const streaks = useMemo(() => {
     return store.habits.map((h) => ({
       ...h,
@@ -53,21 +49,27 @@ export default function Dashboard({ store, period, onPeriodChange }: Props) {
 
   return (
     <div className="space-y-8">
+      {/* Heatmap */}
+      <WeeklyHeatmap store={store} />
+
       {/* Period Selector */}
-      <div className="flex gap-2 bg-white/5 p-1 rounded-xl">
-        {(Object.keys(PERIOD_LABELS) as ViewPeriod[]).map((p) => (
-          <button
-            key={p}
-            onClick={() => onPeriodChange(p)}
-            className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-              period === p
-                ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/25'
-                : 'text-white/50 hover:text-white/80 hover:bg-white/5'
-            }`}
-          >
-            {PERIOD_LABELS[p]}
-          </button>
-        ))}
+      <div>
+        <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-3">기간별 추이</h3>
+        <div className="flex gap-2 bg-white/5 p-1 rounded-xl">
+          {(Object.keys(PERIOD_LABELS) as ViewPeriod[]).map((p) => (
+            <button
+              key={p}
+              onClick={() => onPeriodChange(p)}
+              className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                period === p
+                  ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/25'
+                  : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+              }`}
+            >
+              {PERIOD_LABELS[p]}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Overview Cards */}
@@ -132,7 +134,6 @@ export default function Dashboard({ store, period, onPeriodChange }: Props) {
                   {stat.overallRate}%
                 </span>
               </div>
-              {/* Progress bar */}
               <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-700 ${
@@ -145,7 +146,6 @@ export default function Dashboard({ store, period, onPeriodChange }: Props) {
                   style={{ width: `${stat.overallRate}%` }}
                 />
               </div>
-              {/* Mini chart */}
               <TrendChart data={stat.periods} height={80} />
             </div>
           ))}
