@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { format, subDays, startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { HabitStore } from '@/lib/types';
+import { getOverallDailyRate } from '@/lib/stats';
 
 interface Props {
   store: HabitStore;
@@ -15,6 +16,12 @@ type BoardMode = 'week' | 'month';
 export default function StatusBoard({ store, onToggle }: Props) {
   const [mode, setMode] = useState<BoardMode>('week');
   const [baseDate, setBaseDate] = useState(new Date());
+
+  const today = new Date();
+  const todayStr = format(today, 'yyyy-MM-dd');
+  const todayRate = getOverallDailyRate(store, todayStr);
+  const todayRecord = store.records.find((r) => r.date === todayStr);
+  const todayCompleted = store.habits.filter((h) => todayRecord?.completions[h.id] === true).length;
 
   const days = useMemo(() => {
     if (mode === 'week') {
@@ -28,8 +35,6 @@ export default function StatusBoard({ store, onToggle }: Props) {
     }
   }, [mode, baseDate]);
 
-  const todayStr = format(new Date(), 'yyyy-MM-dd');
-
   const navigate = (dir: -1 | 1) => {
     const offset = mode === 'week' ? 7 : 30;
     const d = new Date(baseDate);
@@ -41,7 +46,6 @@ export default function StatusBoard({ store, onToggle }: Props) {
     ? `${format(days[0], 'M/d', { locale: ko })} - ${format(days[days.length - 1], 'M/d', { locale: ko })}`
     : format(baseDate, 'yyyy년 M월', { locale: ko });
 
-  // Calculate per-habit completion rate for visible range
   const habitRates = useMemo(() => {
     return store.habits.map((habit) => {
       const done = days.filter((d) => {
@@ -53,7 +57,6 @@ export default function StatusBoard({ store, onToggle }: Props) {
     });
   }, [store, days]);
 
-  // Calculate per-day completion rate
   const dayRates = useMemo(() => {
     return days.map((d) => {
       const ds = format(d, 'yyyy-MM-dd');
@@ -64,9 +67,97 @@ export default function StatusBoard({ store, onToggle }: Props) {
     });
   }, [store, days]);
 
+  // Week mini-rates for gauge bar chart
+  const weekRates = useMemo(() => {
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = subDays(today, 6 - i);
+      const ds = format(d, 'yyyy-MM-dd');
+      return {
+        label: format(d, 'E', { locale: ko }),
+        rate: getOverallDailyRate(store, ds),
+        isToday: ds === todayStr,
+      };
+    });
+  }, [store, todayStr]);
+
+  const strokeColor = todayRate >= 80 ? '#34d399' : todayRate >= 50 ? '#fbbf24' : todayRate > 0 ? '#f87171' : 'rgba(255,255,255,0.08)';
+  const circumference = 2 * Math.PI * 54;
+
   return (
-    <div className="space-y-4">
-      {/* Controls */}
+    <div className="space-y-8">
+      {/* Top: Today gauge + habit icons */}
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-center lg:items-start">
+        {/* Gauge */}
+        <div className="flex flex-col items-center gap-4 shrink-0">
+          <p className="text-sm font-medium text-white/60">
+            {format(today, 'M월 d일 EEEE', { locale: ko })}
+          </p>
+          <div className="relative w-36 h-36">
+            <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
+              <circle
+                cx="60" cy="60" r="54" fill="none"
+                stroke={strokeColor} strokeWidth="5" strokeLinecap="round"
+                strokeDasharray={`${(todayRate / 100) * circumference} ${circumference}`}
+                className="transition-all duration-1000 ease-out"
+              />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-3xl font-bold text-white">{todayRate}</span>
+              <span className="text-[10px] text-white/35">% ({todayCompleted}/{store.habits.length})</span>
+            </div>
+          </div>
+          {/* Mini week bars */}
+          <div className="flex items-end gap-1 h-10 w-36">
+            {weekRates.map((d, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
+                <div className="w-full relative h-6">
+                  <div
+                    className={`absolute bottom-0 w-full rounded-sm transition-all duration-500 ${
+                      d.isToday ? 'bg-emerald-500' : d.rate >= 80 ? 'bg-emerald-500/40' : d.rate >= 50 ? 'bg-amber-500/40' : d.rate > 0 ? 'bg-white/10' : 'bg-white/[0.03]'
+                    }`}
+                    style={{ height: `${Math.max(d.rate, 4)}%` }}
+                  />
+                </div>
+                <span className={`text-[8px] ${d.isToday ? 'text-emerald-400 font-bold' : 'text-white/20'}`}>
+                  {d.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Habit icon grid */}
+        <div className="flex-1 min-w-0">
+          <p className="text-[10px] text-white/30 uppercase tracking-wider mb-2">오늘의 수행</p>
+          <div className="grid grid-cols-5 sm:grid-cols-5 lg:grid-cols-5 gap-2">
+            {store.habits.map((habit) => {
+              const done = todayRecord?.completions[habit.id] === true;
+              return (
+                <button
+                  key={habit.id}
+                  onClick={() => onToggle(todayStr, habit.id)}
+                  className={`flex flex-col items-center gap-1 p-2.5 rounded-xl transition-all ${
+                    done
+                      ? 'bg-emerald-500/15 ring-1 ring-emerald-500/20'
+                      : 'bg-white/[0.02] opacity-40 hover:opacity-70 hover:bg-white/[0.05]'
+                  }`}
+                >
+                  <span className="text-xl">{habit.emoji}</span>
+                  <span className={`text-[9px] truncate w-full text-center ${done ? 'text-emerald-300/70' : 'text-white/40'}`}>
+                    {habit.name}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="border-t border-white/5" />
+
+      {/* Board Controls */}
       <div className="flex items-center justify-between">
         <div className="flex gap-1 bg-white/5 p-0.5 rounded-lg">
           <button
@@ -109,7 +200,7 @@ export default function StatusBoard({ store, onToggle }: Props) {
               <th className="sticky left-0 z-10 bg-[#0a0a0a] text-left text-xs text-white/40 font-medium py-2 pr-3 min-w-[120px]">
                 습관
               </th>
-              {days.map((d, i) => {
+              {days.map((d) => {
                 const ds = format(d, 'yyyy-MM-dd');
                 const isToday = ds === todayStr;
                 const isSun = d.getDay() === 0;
@@ -148,7 +239,7 @@ export default function StatusBoard({ store, onToggle }: Props) {
                     const ds = format(d, 'yyyy-MM-dd');
                     const rec = store.records.find((r) => r.date === ds);
                     const done = rec?.completions[habit.id] === true;
-                    const isToday = ds === todayStr;
+                    const isTodayCell = ds === todayStr;
                     return (
                       <td key={ds} className="text-center py-1.5 px-0.5">
                         <button
@@ -156,7 +247,7 @@ export default function StatusBoard({ store, onToggle }: Props) {
                           className={`w-7 h-7 rounded-md flex items-center justify-center mx-auto transition-all ${
                             done
                               ? 'bg-emerald-500/30 text-emerald-400'
-                              : isToday
+                              : isTodayCell
                               ? 'bg-white/[0.08] hover:bg-white/15 text-white/20'
                               : 'bg-white/[0.03] hover:bg-white/[0.08] text-white/10'
                           }`}
@@ -185,7 +276,6 @@ export default function StatusBoard({ store, onToggle }: Props) {
               );
             })}
           </tbody>
-          {/* Day completion rate footer */}
           <tfoot>
             <tr className="border-t border-white/5">
               <td className="sticky left-0 z-10 bg-[#0a0a0a] py-2 pr-3">

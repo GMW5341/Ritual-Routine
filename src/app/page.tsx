@@ -3,13 +3,11 @@
 import { useState } from 'react';
 import { ViewPeriod } from '@/lib/types';
 import { useHabitStore } from '@/hooks/useHabitStore';
-import DailyGauge from '@/components/DailyGauge';
 import Dashboard from '@/components/Dashboard';
 import StatusBoard from '@/components/StatusBoard';
 import Settings from '@/components/Settings';
-import Philosophy from '@/components/Philosophy';
 
-type Module = 'board' | 'gauge' | 'dashboard' | 'philosophy' | 'settings';
+type Module = 'board' | 'dashboard' | 'settings';
 
 const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
   {
@@ -17,17 +15,8 @@ const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
     label: '현황판',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M3 6h18M3 14h18M3 18h18" />
-      </svg>
-    ),
-  },
-  {
-    key: 'gauge',
-    label: '오늘',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="9" strokeWidth={1.5} />
-        <path strokeLinecap="round" strokeWidth={1.5} d="M12 7v5l3 3" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 14l2 2 4-4" />
       </svg>
     ),
   },
@@ -38,15 +27,6 @@ const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3v18h18" />
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16l4-6 4 4 4-8" />
-      </svg>
-    ),
-  },
-  {
-    key: 'philosophy',
-    label: '원칙',
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
       </svg>
     ),
   },
@@ -80,12 +60,8 @@ export default function Home() {
     switch (activeModule) {
       case 'board':
         return <StatusBoard store={store} onToggle={toggleHabit} />;
-      case 'gauge':
-        return <DailyGauge store={store} />;
       case 'dashboard':
         return <Dashboard store={store} period={period} onPeriodChange={setPeriod} />;
-      case 'philosophy':
-        return <Philosophy />;
       case 'settings':
         return <Settings store={store} onAdd={addHabit} onRemove={removeHabit} />;
     }
@@ -97,15 +73,13 @@ export default function Home() {
     <div className="min-h-screen bg-[#0a0a0a] flex">
       {/* ===== DESKTOP SIDEBAR ===== */}
       <aside className="hidden lg:flex flex-col w-56 border-r border-white/5 bg-[#070707] fixed inset-y-0 left-0 z-40">
-        {/* Logo */}
-        <div className="px-5 pt-6 pb-8">
+        <div className="px-5 pt-7 pb-10">
           <h1 className="text-lg font-bold text-white tracking-tight">
             Ritual <span className="text-emerald-400">&</span> Routine
           </h1>
-          <p className="text-[9px] text-white/20 mt-1 tracking-[0.15em]">지속가능한 삶을 위한 원칙</p>
+          <p className="text-[9px] text-white/20 mt-1.5 tracking-[0.15em]">지속가능한 삶을 위한 원칙</p>
         </div>
 
-        {/* Nav */}
         <nav className="flex-1 px-3 space-y-1">
           {NAV_ITEMS.map((item) => (
             <button
@@ -123,9 +97,8 @@ export default function Home() {
           ))}
         </nav>
 
-        {/* Sidebar footer */}
-        <div className="px-5 py-6 border-t border-white/5">
-          <div className="space-y-1 text-center">
+        <div className="px-5 py-8 border-t border-white/5">
+          <div className="space-y-1.5 text-center">
             <p className="text-[10px] text-white/15">체력은 정신력.</p>
             <p className="text-[10px] text-white/15">정신력은 의사결정.</p>
             <p className="text-[10px] text-white/15">의사결정은 내 삶.</p>
@@ -175,8 +148,7 @@ export default function Home() {
       <div className="flex-1 lg:ml-56 flex flex-col min-h-screen">
         {/* Top bar */}
         <header className="sticky top-0 z-30 backdrop-blur-xl bg-[#0a0a0a]/80 border-b border-white/5">
-          <div className="flex items-center gap-3 px-4 lg:px-8 py-3">
-            {/* Mobile hamburger */}
+          <div className="flex items-center gap-3 px-4 lg:px-10 h-14">
             <button
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden p-2 -ml-2 text-white/50 hover:text-white transition-colors"
@@ -189,8 +161,8 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Content */}
-        <main className="flex-1 px-4 lg:px-8 py-6 max-w-5xl">
+        {/* Content area with breathing room */}
+        <main className="flex-1 px-4 lg:px-10 pt-8 pb-12 max-w-5xl">
           {renderModule()}
         </main>
       </div>

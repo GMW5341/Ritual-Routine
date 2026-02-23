@@ -48,7 +48,22 @@ export default function Dashboard({ store, period, onPeriodChange }: Props) {
   }, [store]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
+      {/* Philosophy banner - subtle, integrated */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-950/40 via-[#0a0a0a] to-emerald-950/40 border border-emerald-500/10 px-6 py-5">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(52,211,153,0.05),transparent_70%)]" />
+        <div className="relative flex items-center justify-between gap-6 flex-wrap">
+          <div className="flex items-center gap-4 text-white/40 text-sm">
+            <span>체력은 정신력</span>
+            <span className="text-emerald-500/40">&rarr;</span>
+            <span>정신력은 의사결정</span>
+            <span className="text-emerald-500/40">&rarr;</span>
+            <span>의사결정은 내 삶</span>
+          </div>
+          <span className="text-xs text-emerald-400/50 tracking-widest font-medium">지속가능한 삶을 위한 원칙</span>
+        </div>
+      </div>
+
       {/* Heatmap */}
       <WeeklyHeatmap store={store} />
 
