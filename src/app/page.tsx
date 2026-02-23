@@ -43,7 +43,7 @@ const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
 ];
 
 export default function Home() {
-  const { store, addHabit, removeHabit, toggleHabit, setMemo, deleteMemo } = useHabitStore();
+  const { store, addHabit, removeHabit, toggleHabit, setMemo, deleteMemo, setSleep, updateFrequency } = useHabitStore();
   const [activeModule, setActiveModule] = useState<Module>('board');
   const [period, setPeriod] = useState<ViewPeriod>('daily');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -59,11 +59,11 @@ export default function Home() {
   const renderModule = () => {
     switch (activeModule) {
       case 'board':
-        return <StatusBoard store={store} onToggle={toggleHabit} onSaveMemo={setMemo} onDeleteMemo={deleteMemo} />;
+        return <StatusBoard store={store} onToggle={toggleHabit} onSaveMemo={setMemo} onDeleteMemo={deleteMemo} onSaveSleep={setSleep} />;
       case 'dashboard':
         return <Dashboard store={store} period={period} onPeriodChange={setPeriod} />;
       case 'settings':
-        return <Settings store={store} onAdd={addHabit} onRemove={removeHabit} />;
+        return <Settings store={store} onAdd={addHabit} onRemove={removeHabit} onUpdateFrequency={updateFrequency} />;
     }
   };
 

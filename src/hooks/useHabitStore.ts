@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { HabitStore } from '@/lib/types';
-import { loadStore, saveStore, addHabit, removeHabit, toggleHabit, setMemo, deleteMemo } from '@/lib/storage';
+import { HabitStore, HabitFrequency, SleepRecord } from '@/lib/types';
+import { loadStore, saveStore, addHabit, removeHabit, toggleHabit, setMemo, deleteMemo, setSleep, updateHabitFrequency } from '@/lib/storage';
 
 export function useHabitStore() {
   const [store, setStore] = useState<HabitStore | null>(null);
@@ -17,9 +17,9 @@ export function useHabitStore() {
   }, []);
 
   const handleAddHabit = useCallback(
-    (name: string, emoji: string) => {
+    (name: string, emoji: string, frequency: HabitFrequency = 'daily') => {
       if (!store) return;
-      update(addHabit(store, name, emoji));
+      update(addHabit(store, name, emoji, frequency));
     },
     [store, update]
   );
@@ -56,6 +56,22 @@ export function useHabitStore() {
     [store, update]
   );
 
+  const handleSetSleep = useCallback(
+    (date: string, sleep: SleepRecord) => {
+      if (!store) return;
+      update(setSleep(store, date, sleep));
+    },
+    [store, update]
+  );
+
+  const handleUpdateFrequency = useCallback(
+    (habitId: string, frequency: HabitFrequency) => {
+      if (!store) return;
+      update(updateHabitFrequency(store, habitId, frequency));
+    },
+    [store, update]
+  );
+
   return {
     store,
     addHabit: handleAddHabit,
@@ -63,5 +79,7 @@ export function useHabitStore() {
     toggleHabit: handleToggle,
     setMemo: handleSetMemo,
     deleteMemo: handleDeleteMemo,
+    setSleep: handleSetSleep,
+    updateFrequency: handleUpdateFrequency,
   };
 }

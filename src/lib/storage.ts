@@ -1,19 +1,19 @@
-import { HabitStore, Habit, DailyRecord } from './types';
+import { HabitStore, Habit, DailyRecord, HabitFrequency, SleepRecord } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
 const STORAGE_KEY = 'ritual-routine-store';
 
 const DEFAULT_HABITS: Omit<Habit, 'id' | 'createdAt'>[] = [
-  { name: '명상', emoji: '🧘' },
-  { name: 'SNS', emoji: '📱' },
-  { name: '글쓰기', emoji: '✍️' },
-  { name: '독서', emoji: '📚' },
-  { name: '운동', emoji: '💪' },
-  { name: '찬물 샤워', emoji: '🚿' },
-  { name: '자기 긍정', emoji: '🌟' },
-  { name: '다짐 적기', emoji: '📝' },
-  { name: '피아노 연습', emoji: '🎹' },
-  { name: '전시 감상', emoji: '🎨' },
+  { name: '명상', emoji: '🧘', frequency: 'daily' },
+  { name: 'SNS', emoji: '📱', frequency: 'daily' },
+  { name: '글쓰기', emoji: '✍️', frequency: 'daily' },
+  { name: '독서', emoji: '📚', frequency: 'daily' },
+  { name: '운동', emoji: '💪', frequency: 'daily' },
+  { name: '찬물 샤워', emoji: '🚿', frequency: 'daily' },
+  { name: '자기 긍정', emoji: '🌟', frequency: 'daily' },
+  { name: '다짐 적기', emoji: '📝', frequency: 'daily' },
+  { name: '피아노 연습', emoji: '🎹', frequency: 'weekly' },
+  { name: '전시 감상', emoji: '🎨', frequency: 'monthly' },
 ];
 
 function getInitialStore(): HabitStore {
@@ -28,6 +28,15 @@ function getInitialStore(): HabitStore {
   };
 }
 
+function migrateStore(store: HabitStore): HabitStore {
+  // Add frequency field to habits that don't have it (migration from old data)
+  const habits = store.habits.map((h) => ({
+    ...h,
+    frequency: h.frequency || 'daily' as HabitFrequency,
+  }));
+  return { ...store, habits };
+}
+
 export function loadStore(): HabitStore {
   if (typeof window === 'undefined') return getInitialStore();
   const raw = localStorage.getItem(STORAGE_KEY);
@@ -36,7 +45,7 @@ export function loadStore(): HabitStore {
     saveStore(initial);
     return initial;
   }
-  return JSON.parse(raw) as HabitStore;
+  return migrateStore(JSON.parse(raw) as HabitStore);
 }
 
 export function saveStore(store: HabitStore): void {
@@ -44,14 +53,24 @@ export function saveStore(store: HabitStore): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
 }
 
-export function addHabit(store: HabitStore, name: string, emoji: string): HabitStore {
+export function addHabit(store: HabitStore, name: string, emoji: string, frequency: HabitFrequency = 'daily'): HabitStore {
   const newHabit: Habit = {
     id: uuidv4(),
     name,
     emoji,
+    frequency,
     createdAt: new Date().toISOString(),
   };
   return { ...store, habits: [...store.habits, newHabit] };
+}
+
+export function updateHabitFrequency(store: HabitStore, habitId: string, frequency: HabitFrequency): HabitStore {
+  return {
+    ...store,
+    habits: store.habits.map((h) =>
+      h.id === habitId ? { ...h, frequency } : h
+    ),
+  };
 }
 
 export function removeHabit(store: HabitStore, habitId: string): HabitStore {
@@ -116,5 +135,22 @@ export function deleteMemo(store: HabitStore, date: string): HabitStore {
     records: store.records.map((r) =>
       r.date === date ? { ...r, memo: undefined } : r
     ),
+  };
+}
+
+export function setSleep(store: HabitStore, date: string, sleep: SleepRecord): HabitStore {
+  const existing = store.records.find((r) => r.date === date);
+  const cleanSleep = (sleep.wakeTime || sleep.sleepTime) ? sleep : undefined;
+  if (existing) {
+    return {
+      ...store,
+      records: store.records.map((r) =>
+        r.date === date ? { ...r, sleep: cleanSleep } : r
+      ),
+    };
+  }
+  return {
+    ...store,
+    records: [...store.records, { date, completions: {}, sleep: cleanSleep }],
   };
 }

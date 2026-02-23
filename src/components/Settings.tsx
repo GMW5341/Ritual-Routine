@@ -1,15 +1,16 @@
 'use client';
 
-import { HabitStore } from '@/lib/types';
+import { HabitStore, HabitFrequency } from '@/lib/types';
 import HabitManager from './HabitManager';
 
 interface Props {
   store: HabitStore;
-  onAdd: (name: string, emoji: string) => void;
+  onAdd: (name: string, emoji: string, frequency: HabitFrequency) => void;
   onRemove: (habitId: string) => void;
+  onUpdateFrequency: (habitId: string, frequency: HabitFrequency) => void;
 }
 
-export default function Settings({ store, onAdd, onRemove }: Props) {
+export default function Settings({ store, onAdd, onRemove, onUpdateFrequency }: Props) {
   return (
     <div className="space-y-8">
       {/* Section: Habit Management */}
@@ -22,7 +23,7 @@ export default function Settings({ store, onAdd, onRemove }: Props) {
           </span>
           <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider">습관 항목 관리</h3>
         </div>
-        <HabitManager store={store} onAdd={onAdd} onRemove={onRemove} />
+        <HabitManager store={store} onAdd={onAdd} onRemove={onRemove} onUpdateFrequency={onUpdateFrequency} />
       </div>
 
       {/* Section: Data */}

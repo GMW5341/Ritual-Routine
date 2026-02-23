@@ -3,20 +3,22 @@
 import { useState, useMemo } from 'react';
 import { format, subDays, startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { HabitStore } from '@/lib/types';
+import { HabitStore, SleepRecord } from '@/lib/types';
 import { getOverallDailyRate } from '@/lib/stats';
 import DailyMemo from './DailyMemo';
+import SleepTracker from './SleepTracker';
 
 interface Props {
   store: HabitStore;
   onToggle: (date: string, habitId: string) => void;
   onSaveMemo: (date: string, memo: string) => void;
   onDeleteMemo: (date: string) => void;
+  onSaveSleep: (date: string, sleep: SleepRecord) => void;
 }
 
 type BoardMode = 'week' | 'month';
 
-export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo }: Props) {
+export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo, onSaveSleep }: Props) {
   const [mode, setMode] = useState<BoardMode>('week');
   const [baseDate, setBaseDate] = useState(new Date());
 
@@ -236,6 +238,13 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo 
                     <div className="flex items-center gap-2">
                       <span className="text-sm">{habit.emoji}</span>
                       <span className="text-xs text-white/70 truncate max-w-[80px]">{habit.name}</span>
+                      {habit.frequency !== 'daily' && (
+                        <span className={`text-[8px] px-1 py-0.5 rounded ${
+                          habit.frequency === 'weekly' ? 'text-blue-400/60 bg-blue-500/10' : 'text-violet-400/60 bg-violet-500/10'
+                        }`}>
+                          {habit.frequency === 'weekly' ? '주' : '월'}
+                        </span>
+                      )}
                     </div>
                   </td>
                   {days.map((d) => {
@@ -298,6 +307,12 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo 
           </tfoot>
         </table>
       </div>
+
+      {/* Divider */}
+      <div className="border-t border-white/5" />
+
+      {/* Sleep Tracker */}
+      <SleepTracker store={store} onSave={onSaveSleep} />
 
       {/* Divider */}
       <div className="border-t border-white/5" />

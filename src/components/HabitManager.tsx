@@ -1,28 +1,43 @@
 'use client';
 
 import { useState } from 'react';
-import { HabitStore } from '@/lib/types';
+import { HabitStore, HabitFrequency } from '@/lib/types';
 
 interface Props {
   store: HabitStore;
-  onAdd: (name: string, emoji: string) => void;
+  onAdd: (name: string, emoji: string, frequency: HabitFrequency) => void;
   onRemove: (habitId: string) => void;
+  onUpdateFrequency: (habitId: string, frequency: HabitFrequency) => void;
 }
 
 const EMOJI_OPTIONS = ['🧘', '📱', '✍️', '📚', '💪', '🚿', '🌟', '📝', '🎹', '🎨', '🏃', '🍎', '💤', '🧠', '🎯', '💊', '🌅', '🧹', '💰', '🗣️'];
 
-export default function HabitManager({ store, onAdd, onRemove }: Props) {
+const FREQ_LABELS: Record<HabitFrequency, string> = {
+  daily: '매일',
+  weekly: '주간',
+  monthly: '월간',
+};
+
+const FREQ_COLORS: Record<HabitFrequency, string> = {
+  daily: 'text-emerald-400/60 bg-emerald-500/10',
+  weekly: 'text-blue-400/60 bg-blue-500/10',
+  monthly: 'text-violet-400/60 bg-violet-500/10',
+};
+
+export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency }: Props) {
   const [name, setName] = useState('');
   const [emoji, setEmoji] = useState('🎯');
+  const [frequency, setFrequency] = useState<HabitFrequency>('daily');
   const [showForm, setShowForm] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
-    onAdd(name.trim(), emoji);
+    onAdd(name.trim(), emoji, frequency);
     setName('');
     setEmoji('🎯');
+    setFrequency('daily');
     setShowForm(false);
   };
 
@@ -72,6 +87,30 @@ export default function HabitManager({ store, onAdd, onRemove }: Props) {
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/30 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50"
             />
           </div>
+          <div>
+            <label className="block text-sm text-white/60 mb-2">목표 주기</label>
+            <div className="flex gap-2">
+              {(Object.keys(FREQ_LABELS) as HabitFrequency[]).map((f) => (
+                <button
+                  key={f}
+                  type="button"
+                  onClick={() => setFrequency(f)}
+                  className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                    frequency === f
+                      ? 'bg-emerald-500 text-white'
+                      : 'bg-white/5 text-white/40 hover:text-white/70 hover:bg-white/10'
+                  }`}
+                >
+                  {FREQ_LABELS[f]}
+                </button>
+              ))}
+            </div>
+            <p className="text-[10px] text-white/25 mt-1.5">
+              {frequency === 'daily' && '매일 수행을 목표로 합니다.'}
+              {frequency === 'weekly' && '일주일에 1회 이상 수행을 목표로 합니다.'}
+              {frequency === 'monthly' && '한 달에 1회 이상 수행을 목표로 합니다.'}
+            </p>
+          </div>
           <button
             type="submit"
             disabled={!name.trim()}
@@ -90,9 +129,27 @@ export default function HabitManager({ store, onAdd, onRemove }: Props) {
             className="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-xl"
           >
             <span className="text-xl">{habit.emoji}</span>
-            <span className="flex-1 text-white/80">{habit.name}</span>
+            <div className="flex-1 min-w-0">
+              <span className="text-white/80 text-sm">{habit.name}</span>
+              {/* Frequency selector inline */}
+              <div className="flex gap-1 mt-1">
+                {(Object.keys(FREQ_LABELS) as HabitFrequency[]).map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => onUpdateFrequency(habit.id, f)}
+                    className={`px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
+                      habit.frequency === f
+                        ? FREQ_COLORS[f]
+                        : 'text-white/15 hover:text-white/30'
+                    }`}
+                  >
+                    {FREQ_LABELS[f]}
+                  </button>
+                ))}
+              </div>
+            </div>
             {confirmDelete === habit.id ? (
-              <div className="flex gap-2">
+              <div className="flex gap-2 shrink-0">
                 <button
                   onClick={() => {
                     onRemove(habit.id);
@@ -112,7 +169,7 @@ export default function HabitManager({ store, onAdd, onRemove }: Props) {
             ) : (
               <button
                 onClick={() => setConfirmDelete(habit.id)}
-                className="p-1 text-white/30 hover:text-red-400 transition-colors"
+                className="p-1 text-white/30 hover:text-red-400 transition-colors shrink-0"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

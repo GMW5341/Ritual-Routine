@@ -7,14 +7,10 @@ import {
   startOfYear,
   endOfYear,
   eachDayOfInterval,
-  eachMonthOfInterval,
-  eachQuarterOfInterval,
   subMonths,
   subYears,
   parseISO,
-  isWithinInterval,
 } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import { HabitStore, ViewPeriod, PeriodStats, HabitStats } from './types';
 
 function getDaysInRange(start: Date, end: Date): string[] {
@@ -51,7 +47,7 @@ export function getDailyStats(store: HabitStore, baseDate: Date, daysBack: numbe
       };
     });
     const { rate } = calcRate(store, habit.id, days);
-    return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, periods, overallRate: rate };
+    return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, frequency: habit.frequency, periods, overallRate: rate };
   });
 }
 
@@ -72,7 +68,7 @@ export function getMonthlyStats(store: HabitStore, baseDate: Date, monthsBack: n
     });
     const allDays = months.flatMap(({ start, end }) => getDaysInRange(start, end));
     const { rate } = calcRate(store, habit.id, allDays);
-    return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, periods, overallRate: rate };
+    return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, frequency: habit.frequency, periods, overallRate: rate };
   });
 }
 
@@ -94,7 +90,7 @@ export function getQuarterlyStats(store: HabitStore, baseDate: Date): HabitStats
     });
     const allDays = quarters.flatMap(({ start, end }) => getDaysInRange(start, end));
     const { rate } = calcRate(store, habit.id, allDays);
-    return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, periods, overallRate: rate };
+    return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, frequency: habit.frequency, periods, overallRate: rate };
   });
 }
 
@@ -115,16 +111,18 @@ export function getYearlyStats(store: HabitStore, baseDate: Date): HabitStats[] 
     });
     const allDays = years.flatMap(({ start, end }) => getDaysInRange(start, end));
     const { rate } = calcRate(store, habit.id, allDays);
-    return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, periods, overallRate: rate };
+    return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, frequency: habit.frequency, periods, overallRate: rate };
   });
 }
 
 export function getOverallDailyRate(store: HabitStore, date: string): number {
-  if (store.habits.length === 0) return 0;
+  // Only count daily-frequency habits for the daily rate
+  const dailyHabits = store.habits.filter((h) => h.frequency === 'daily');
+  if (dailyHabits.length === 0) return 0;
   const rec = store.records.find((r) => r.date === date);
   if (!rec) return 0;
-  const completed = store.habits.filter((h) => rec.completions[h.id] === true).length;
-  return Math.round((completed / store.habits.length) * 100);
+  const completed = dailyHabits.filter((h) => rec.completions[h.id] === true).length;
+  return Math.round((completed / dailyHabits.length) * 100);
 }
 
 export function getStreakDays(store: HabitStore, habitId: string, baseDate: Date): number {
