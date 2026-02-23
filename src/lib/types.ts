@@ -8,6 +8,7 @@ export interface Habit {
 export interface DailyRecord {
   date: string; // YYYY-MM-DD
   completions: Record<string, boolean>; // habitId -> completed
+  memo?: string;
 }
 
 export interface HabitStore {

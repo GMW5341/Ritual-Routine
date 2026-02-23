@@ -91,3 +91,30 @@ export function toggleHabit(
 export function getRecord(store: HabitStore, date: string): DailyRecord | undefined {
   return store.records.find((r) => r.date === date);
 }
+
+export function setMemo(store: HabitStore, date: string, memo: string): HabitStore {
+  const existing = store.records.find((r) => r.date === date);
+  if (existing) {
+    return {
+      ...store,
+      records: store.records.map((r) =>
+        r.date === date ? { ...r, memo: memo || undefined } : r
+      ),
+    };
+  }
+  const newRecord: DailyRecord = {
+    date,
+    completions: {},
+    memo: memo || undefined,
+  };
+  return { ...store, records: [...store.records, newRecord] };
+}
+
+export function deleteMemo(store: HabitStore, date: string): HabitStore {
+  return {
+    ...store,
+    records: store.records.map((r) =>
+      r.date === date ? { ...r, memo: undefined } : r
+    ),
+  };
+}

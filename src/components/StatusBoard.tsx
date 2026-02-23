@@ -5,15 +5,18 @@ import { format, subDays, startOfMonth, endOfMonth, eachDayOfInterval, startOfWe
 import { ko } from 'date-fns/locale';
 import { HabitStore } from '@/lib/types';
 import { getOverallDailyRate } from '@/lib/stats';
+import DailyMemo from './DailyMemo';
 
 interface Props {
   store: HabitStore;
   onToggle: (date: string, habitId: string) => void;
+  onSaveMemo: (date: string, memo: string) => void;
+  onDeleteMemo: (date: string) => void;
 }
 
 type BoardMode = 'week' | 'month';
 
-export default function StatusBoard({ store, onToggle }: Props) {
+export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo }: Props) {
   const [mode, setMode] = useState<BoardMode>('week');
   const [baseDate, setBaseDate] = useState(new Date());
 
@@ -295,6 +298,17 @@ export default function StatusBoard({ store, onToggle }: Props) {
           </tfoot>
         </table>
       </div>
+
+      {/* Divider */}
+      <div className="border-t border-white/5" />
+
+      {/* Daily Memo */}
+      <DailyMemo
+        store={store}
+        date={todayStr}
+        onSave={onSaveMemo}
+        onDelete={onDeleteMemo}
+      />
     </div>
   );
 }
