@@ -26,7 +26,8 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
   const todayStr = format(today, 'yyyy-MM-dd');
   const todayRate = getOverallDailyRate(store, todayStr);
   const todayRecord = store.records.find((r) => r.date === todayStr);
-  const todayCompleted = store.habits.filter((h) => todayRecord?.completions[h.id] === true).length;
+  const dailyHabits = store.habits.filter((h) => h.frequency === 'daily');
+  const todayCompleted = dailyHabits.filter((h) => todayRecord?.completions[h.id] === true).length;
 
   const days = useMemo(() => {
     if (mode === 'week') {
@@ -53,6 +54,35 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
 
   const habitRates = useMemo(() => {
     return store.habits.map((habit) => {
+      if (habit.frequency === 'weekly') {
+        // Group days into weeks, 1+ completion per week = success
+        const weeks = new Map<string, boolean>();
+        days.forEach((d) => {
+          const weekKey = format(startOfWeek(d, { weekStartsOn: 1 }), 'yyyy-MM-dd');
+          if (!weeks.has(weekKey)) weeks.set(weekKey, false);
+          const ds = format(d, 'yyyy-MM-dd');
+          const rec = store.records.find((r) => r.date === ds);
+          if (rec?.completions[habit.id] === true) weeks.set(weekKey, true);
+        });
+        const total = weeks.size;
+        const done = Array.from(weeks.values()).filter(Boolean).length;
+        return { habitId: habit.id, rate: total > 0 ? Math.round((done / total) * 100) : 0 };
+      }
+      if (habit.frequency === 'monthly') {
+        // Group days into months, 1+ completion per month = success
+        const months = new Map<string, boolean>();
+        days.forEach((d) => {
+          const monthKey = format(d, 'yyyy-MM');
+          if (!months.has(monthKey)) months.set(monthKey, false);
+          const ds = format(d, 'yyyy-MM-dd');
+          const rec = store.records.find((r) => r.date === ds);
+          if (rec?.completions[habit.id] === true) months.set(monthKey, true);
+        });
+        const total = months.size;
+        const done = Array.from(months.values()).filter(Boolean).length;
+        return { habitId: habit.id, rate: total > 0 ? Math.round((done / total) * 100) : 0 };
+      }
+      // daily: completed days / total days
       const done = days.filter((d) => {
         const ds = format(d, 'yyyy-MM-dd');
         const rec = store.records.find((r) => r.date === ds);
@@ -63,12 +93,13 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
   }, [store, days]);
 
   const dayRates = useMemo(() => {
+    const dailyHabits = store.habits.filter((h) => h.frequency === 'daily');
     return days.map((d) => {
       const ds = format(d, 'yyyy-MM-dd');
       const rec = store.records.find((r) => r.date === ds);
-      if (!rec || store.habits.length === 0) return 0;
-      const done = store.habits.filter((h) => rec.completions[h.id] === true).length;
-      return Math.round((done / store.habits.length) * 100);
+      if (!rec || dailyHabits.length === 0) return 0;
+      const done = dailyHabits.filter((h) => rec.completions[h.id] === true).length;
+      return Math.round((done / dailyHabits.length) * 100);
     });
   }, [store, days]);
 
@@ -109,7 +140,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span className="text-3xl font-bold text-white">{todayRate}</span>
-              <span className="text-[10px] text-white/35">% ({todayCompleted}/{store.habits.length})</span>
+              <span className="text-[10px] text-white/35">% ({todayCompleted}/{dailyHabits.length})</span>
             </div>
           </div>
           {/* Mini week bars */}

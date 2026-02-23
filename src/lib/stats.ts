@@ -6,20 +6,51 @@ import {
   endOfQuarter,
   startOfYear,
   endOfYear,
+  startOfWeek,
   eachDayOfInterval,
   subMonths,
   subYears,
   parseISO,
 } from 'date-fns';
-import { HabitStore, ViewPeriod, PeriodStats, HabitStats } from './types';
+import { HabitStore, HabitFrequency, ViewPeriod, PeriodStats, HabitStats } from './types';
 
 function getDaysInRange(start: Date, end: Date): string[] {
   return eachDayOfInterval({ start, end }).map((d) => format(d, 'yyyy-MM-dd'));
 }
 
-function calcRate(store: HabitStore, habitId: string, days: string[]): { rate: number; completed: number; total: number } {
+function calcRate(store: HabitStore, habitId: string, days: string[], frequency: HabitFrequency = 'daily'): { rate: number; completed: number; total: number } {
+  if (days.length === 0) return { rate: 0, completed: 0, total: 0 };
+
+  if (frequency === 'weekly') {
+    // Group days into weeks, check if completed at least once per week
+    const weeks = new Map<string, boolean>();
+    days.forEach((d) => {
+      const weekKey = format(startOfWeek(parseISO(d), { weekStartsOn: 1 }), 'yyyy-MM-dd');
+      if (!weeks.has(weekKey)) weeks.set(weekKey, false);
+      const rec = store.records.find((r) => r.date === d);
+      if (rec?.completions[habitId] === true) weeks.set(weekKey, true);
+    });
+    const total = weeks.size;
+    const completed = Array.from(weeks.values()).filter(Boolean).length;
+    return { rate: total > 0 ? Math.round((completed / total) * 100) : 0, completed, total };
+  }
+
+  if (frequency === 'monthly') {
+    // Group days into months, check if completed at least once per month
+    const months = new Map<string, boolean>();
+    days.forEach((d) => {
+      const monthKey = d.substring(0, 7);
+      if (!months.has(monthKey)) months.set(monthKey, false);
+      const rec = store.records.find((r) => r.date === d);
+      if (rec?.completions[habitId] === true) months.set(monthKey, true);
+    });
+    const total = months.size;
+    const completed = Array.from(months.values()).filter(Boolean).length;
+    return { rate: total > 0 ? Math.round((completed / total) * 100) : 0, completed, total };
+  }
+
+  // daily (default)
   const total = days.length;
-  if (total === 0) return { rate: 0, completed: 0, total: 0 };
   const completed = days.filter((d) => {
     const rec = store.records.find((r) => r.date === d);
     return rec?.completions[habitId] === true;
@@ -46,7 +77,7 @@ export function getDailyStats(store: HabitStore, baseDate: Date, daysBack: numbe
         total: 1,
       };
     });
-    const { rate } = calcRate(store, habit.id, days);
+    const { rate } = calcRate(store, habit.id, days, habit.frequency);
     return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, frequency: habit.frequency, periods, overallRate: rate };
   });
 }
@@ -63,11 +94,11 @@ export function getMonthlyStats(store: HabitStore, baseDate: Date, monthsBack: n
   return store.habits.map((habit) => {
     const periods: PeriodStats[] = months.map(({ start, end, label }) => {
       const days = getDaysInRange(start, end);
-      const { rate, completed, total } = calcRate(store, habit.id, days);
+      const { rate, completed, total } = calcRate(store, habit.id, days, habit.frequency);
       return { label, rate, completed, total };
     });
     const allDays = months.flatMap(({ start, end }) => getDaysInRange(start, end));
-    const { rate } = calcRate(store, habit.id, allDays);
+    const { rate } = calcRate(store, habit.id, allDays, habit.frequency);
     return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, frequency: habit.frequency, periods, overallRate: rate };
   });
 }
@@ -85,11 +116,11 @@ export function getQuarterlyStats(store: HabitStore, baseDate: Date): HabitStats
   return store.habits.map((habit) => {
     const periods: PeriodStats[] = quarters.map(({ start, end, label }) => {
       const days = getDaysInRange(start, end);
-      const { rate, completed, total } = calcRate(store, habit.id, days);
+      const { rate, completed, total } = calcRate(store, habit.id, days, habit.frequency);
       return { label, rate, completed, total };
     });
     const allDays = quarters.flatMap(({ start, end }) => getDaysInRange(start, end));
-    const { rate } = calcRate(store, habit.id, allDays);
+    const { rate } = calcRate(store, habit.id, allDays, habit.frequency);
     return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, frequency: habit.frequency, periods, overallRate: rate };
   });
 }
@@ -106,11 +137,11 @@ export function getYearlyStats(store: HabitStore, baseDate: Date): HabitStats[] 
   return store.habits.map((habit) => {
     const periods: PeriodStats[] = years.map(({ start, end, label }) => {
       const days = getDaysInRange(start, end);
-      const { rate, completed, total } = calcRate(store, habit.id, days);
+      const { rate, completed, total } = calcRate(store, habit.id, days, habit.frequency);
       return { label, rate, completed, total };
     });
     const allDays = years.flatMap(({ start, end }) => getDaysInRange(start, end));
-    const { rate } = calcRate(store, habit.id, allDays);
+    const { rate } = calcRate(store, habit.id, allDays, habit.frequency);
     return { habitId: habit.id, habitName: habit.name, emoji: habit.emoji, frequency: habit.frequency, periods, overallRate: rate };
   });
 }
