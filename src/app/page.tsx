@@ -4,12 +4,14 @@ import { useState, useCallback } from 'react';
 import { ViewPeriod } from '@/lib/types';
 import { useHabitStore } from '@/hooks/useHabitStore';
 import { useReadingStore } from '@/hooks/useReadingStore';
+import { useGoalStore } from '@/hooks/useGoalStore';
 import Dashboard from '@/components/Dashboard';
 import StatusBoard from '@/components/StatusBoard';
 import Settings from '@/components/Settings';
 import ReadingLog from '@/components/ReadingLog';
+import Goals from '@/components/Goals';
 
-type Module = 'board' | 'dashboard' | 'reading' | 'settings';
+type Module = 'board' | 'dashboard' | 'reading' | 'goals' | 'settings';
 
 const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
   {
@@ -42,6 +44,15 @@ const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
     ),
   },
   {
+    key: 'goals',
+    label: '목표',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    ),
+  },
+  {
     key: 'settings',
     label: '설정',
     icon: (
@@ -61,6 +72,10 @@ export default function Home() {
     addNote, updateNote, removeNote,
     setNotion, disconnectNotion,
   } = useReadingStore();
+  const {
+    store: goalStore,
+    addGoal, updateGoal, removeGoal,
+  } = useGoalStore();
   const [activeModule, setActiveModule] = useState<Module>('board');
   const [period, setPeriod] = useState<ViewPeriod>('daily');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -69,7 +84,7 @@ export default function Home() {
     setActiveModule('reading');
   }, []);
 
-  if (!store || !readingStore) {
+  if (!store || !readingStore || !goalStore) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a]">
         <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
@@ -95,6 +110,15 @@ export default function Home() {
             onRemoveNote={removeNote}
             onSetNotion={setNotion}
             onDisconnectNotion={disconnectNotion}
+          />
+        );
+      case 'goals':
+        return (
+          <Goals
+            goalStore={goalStore}
+            onAdd={addGoal}
+            onUpdate={updateGoal}
+            onRemove={removeGoal}
           />
         );
       case 'settings':

@@ -65,6 +65,27 @@ export interface ReadingStore {
   notion?: NotionIntegration;
 }
 
+// === Goal Types ===
+
+export type GoalTerm = 'short' | 'mid' | 'long';      // 단기 / 중기 / 장기
+export type GoalStatus = 'active' | 'completed' | 'dropped';
+
+export interface Goal {
+  id: string;
+  term: GoalTerm;
+  title: string;
+  description?: string;
+  deadline?: string;   // YYYY-MM-DD
+  status: GoalStatus;
+  progress: number;    // 0-100
+  createdAt: string;
+  completedAt?: string;
+}
+
+export interface GoalStore {
+  goals: Goal[];
+}
+
 // === View Types ===
 
 export type ViewPeriod = 'daily' | 'monthly' | 'quarterly' | 'yearly';

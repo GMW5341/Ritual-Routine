@@ -10,7 +10,7 @@ import NotionConnect from './NotionConnect';
 interface Props {
   readingStore: ReadingStore;
   onAddBook: (title: string, author: string, totalPages?: number, status?: ReadingStatus) => void;
-  onUpdateBook: (bookId: string, updates: Parameters<typeof import('@/lib/readingStorage').updateBook>[2]) => void;
+  onUpdateBook: (bookId: string, updates: Partial<Pick<Book, 'title' | 'author' | 'totalPages' | 'status' | 'rating' | 'startDate' | 'endDate'>>) => void;
   onRemoveBook: (bookId: string) => void;
   onAddNote: (bookId: string, content: string, pagesRead?: number, currentPage?: number) => void;
   onUpdateNote: (noteId: string, updates: { content?: string; pagesRead?: number; currentPage?: number }) => void;
