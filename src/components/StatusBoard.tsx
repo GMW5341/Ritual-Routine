@@ -14,11 +14,12 @@ interface Props {
   onSaveMemo: (date: string, memo: string) => void;
   onDeleteMemo: (date: string) => void;
   onSaveSleep: (date: string, sleep: SleepRecord) => void;
+  onNavigateToReading?: () => void;
 }
 
 type BoardMode = 'week' | 'month';
 
-export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo, onSaveSleep }: Props) {
+export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo, onSaveSleep, onNavigateToReading }: Props) {
   const [mode, setMode] = useState<BoardMode>('week');
   const [baseDate, setBaseDate] = useState(new Date());
 
@@ -169,21 +170,32 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
           <div className="grid grid-cols-5 sm:grid-cols-5 lg:grid-cols-5 gap-2">
             {store.habits.map((habit) => {
               const done = todayRecord?.completions[habit.id] === true;
+              const isReading = habit.name === '독서';
               return (
-                <button
-                  key={habit.id}
-                  onClick={() => onToggle(todayStr, habit.id)}
-                  className={`flex flex-col items-center gap-1 p-2.5 rounded-xl transition-all ${
-                    done
-                      ? 'bg-emerald-500/15 ring-1 ring-emerald-500/20'
-                      : 'bg-white/[0.02] opacity-40 hover:opacity-70 hover:bg-white/[0.05]'
-                  }`}
-                >
-                  <span className="text-xl">{habit.emoji}</span>
-                  <span className={`text-[9px] truncate w-full text-center ${done ? 'text-emerald-300/70' : 'text-white/40'}`}>
-                    {habit.name}
-                  </span>
-                </button>
+                <div key={habit.id} className="relative">
+                  <button
+                    onClick={() => onToggle(todayStr, habit.id)}
+                    className={`w-full flex flex-col items-center gap-1 p-2.5 rounded-xl transition-all ${
+                      done
+                        ? 'bg-emerald-500/15 ring-1 ring-emerald-500/20'
+                        : 'bg-white/[0.02] opacity-40 hover:opacity-70 hover:bg-white/[0.05]'
+                    }`}
+                  >
+                    <span className="text-xl">{habit.emoji}</span>
+                    <span className={`text-[9px] truncate w-full text-center ${done ? 'text-emerald-300/70' : 'text-white/40'}`}>
+                      {habit.name}
+                    </span>
+                  </button>
+                  {/* Reading link indicator */}
+                  {isReading && done && onNavigateToReading && (
+                    <button
+                      onClick={onNavigateToReading}
+                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 translate-y-full z-20 whitespace-nowrap px-2 py-0.5 bg-emerald-500/20 border border-emerald-500/30 rounded-full text-[8px] text-emerald-400 hover:bg-emerald-500/30 transition-colors"
+                    >
+                      기록하기 →
+                    </button>
+                  )}
+                </div>
               );
             })}
           </div>
