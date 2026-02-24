@@ -1,13 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { ViewPeriod } from '@/lib/types';
 import { useHabitStore } from '@/hooks/useHabitStore';
+import { useReadingStore } from '@/hooks/useReadingStore';
+import { useGoalStore } from '@/hooks/useGoalStore';
 import Dashboard from '@/components/Dashboard';
 import StatusBoard from '@/components/StatusBoard';
 import Settings from '@/components/Settings';
+import ReadingLog from '@/components/ReadingLog';
+import Goals from '@/components/Goals';
 
-type Module = 'board' | 'dashboard' | 'settings';
+type Module = 'board' | 'dashboard' | 'reading' | 'goals' | 'settings';
 
 const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
   {
@@ -31,6 +35,24 @@ const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
     ),
   },
   {
+    key: 'reading',
+    label: '독서 기록',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+      </svg>
+    ),
+  },
+  {
+    key: 'goals',
+    label: '목표',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    ),
+  },
+  {
     key: 'settings',
     label: '설정',
     icon: (
@@ -44,11 +66,25 @@ const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
 
 export default function Home() {
   const { store, addHabit, removeHabit, toggleHabit, setMemo, deleteMemo, setSleep, updateFrequency } = useHabitStore();
+  const {
+    store: readingStore,
+    addBook, updateBook, removeBook,
+    addNote, updateNote, removeNote,
+    setNotion, disconnectNotion,
+  } = useReadingStore();
+  const {
+    store: goalStore,
+    addGoal, updateGoal, removeGoal,
+  } = useGoalStore();
   const [activeModule, setActiveModule] = useState<Module>('board');
   const [period, setPeriod] = useState<ViewPeriod>('daily');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  if (!store) {
+  const navigateToReading = useCallback(() => {
+    setActiveModule('reading');
+  }, []);
+
+  if (!store || !readingStore || !goalStore) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a]">
         <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
@@ -59,9 +95,32 @@ export default function Home() {
   const renderModule = () => {
     switch (activeModule) {
       case 'board':
-        return <StatusBoard store={store} onToggle={toggleHabit} onSaveMemo={setMemo} onDeleteMemo={deleteMemo} onSaveSleep={setSleep} />;
+        return <StatusBoard store={store} onToggle={toggleHabit} onSaveMemo={setMemo} onDeleteMemo={deleteMemo} onSaveSleep={setSleep} onNavigateToReading={navigateToReading} />;
       case 'dashboard':
         return <Dashboard store={store} period={period} onPeriodChange={setPeriod} />;
+      case 'reading':
+        return (
+          <ReadingLog
+            readingStore={readingStore}
+            onAddBook={addBook}
+            onUpdateBook={updateBook}
+            onRemoveBook={removeBook}
+            onAddNote={addNote}
+            onUpdateNote={updateNote}
+            onRemoveNote={removeNote}
+            onSetNotion={setNotion}
+            onDisconnectNotion={disconnectNotion}
+          />
+        );
+      case 'goals':
+        return (
+          <Goals
+            goalStore={goalStore}
+            onAdd={addGoal}
+            onUpdate={updateGoal}
+            onRemove={removeGoal}
+          />
+        );
       case 'settings':
         return <Settings store={store} onAdd={addHabit} onRemove={removeHabit} onUpdateFrequency={updateFrequency} />;
     }
