@@ -2,7 +2,9 @@
 
 import { useMemo } from 'react';
 import { HabitStore, ViewPeriod, HabitStats } from '@/lib/types';
-import { getDailyStats, getMonthlyStats, getQuarterlyStats, getYearlyStats, getStreakDays } from '@/lib/stats';
+import { format, startOfWeek, addDays, isAfter } from 'date-fns';
+import { getDailyStats, getMonthlyStats, getQuarterlyStats, getYearlyStats, getStreakDays, getOverallDailyRate } from '@/lib/stats';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import TrendChart from './TrendChart';
 import WeeklyHeatmap from './WeeklyHeatmap';
 
@@ -47,6 +49,17 @@ export default function Dashboard({ store, period, onPeriodChange }: Props) {
     })).sort((a, b) => b.streak - a.streak);
   }, [store]);
 
+  const overallTrend = useMemo(() => {
+    const currentWeekStart = startOfWeek(today, { weekStartsOn: 1 });
+    const start = addDays(currentWeekStart, -21);
+    return Array.from({ length: 28 }, (_, i) => {
+      const d = addDays(start, i);
+      if (isAfter(d, today)) return null;
+      const ds = format(d, 'yyyy-MM-dd');
+      return { label: format(d, 'M/d'), rate: getOverallDailyRate(store, ds) };
+    }).filter(Boolean) as { label: string; rate: number }[];
+  }, [store]);
+
   return (
     <div className="space-y-10">
       {/* Philosophy banner - subtle, integrated */}
@@ -64,8 +77,41 @@ export default function Dashboard({ store, period, onPeriodChange }: Props) {
         </div>
       </div>
 
-      {/* Heatmap */}
-      <WeeklyHeatmap store={store} />
+      {/* Overall Trend + Compact Heatmap */}
+      <div className="flex gap-6 items-start">
+        <div className="flex-1 min-w-0 space-y-3">
+          <h3 className="text-sm font-semibold text-white/90 uppercase tracking-wider">전체 달성률 추이</h3>
+          <div className="bg-[#272c38]/30 border border-[#313744]/40 rounded-xl p-4">
+            <ResponsiveContainer width="100%" height={200}>
+              <AreaChart data={overallTrend} margin={{ top: 5, right: 5, bottom: 0, left: -20 }}>
+                <defs>
+                  <linearGradient id="overallGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#34d399" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="#34d399" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                <XAxis dataKey="label" tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 10 }} axisLine={false} tickLine={false} interval={3} />
+                <YAxis domain={[0, 100]} tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 10 }} axisLine={false} tickLine={false} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'rgba(30,35,48,0.95)',
+                    border: '1px solid rgba(52,211,153,0.12)',
+                    borderRadius: '8px',
+                    color: '#fff',
+                    fontSize: '12px',
+                  }}
+                  formatter={(value: number | undefined) => [`${value ?? 0}%`, '달성률']}
+                />
+                <Area type="monotone" dataKey="rate" stroke="#34d399" strokeWidth={2} fill="url(#overallGradient)" dot={{ fill: '#34d399', r: 2 }} activeDot={{ r: 4, fill: '#34d399' }} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div className="hidden md:block w-44 shrink-0">
+          <WeeklyHeatmap store={store} compact />
+        </div>
+      </div>
 
       {/* Period Selector */}
       <div>
