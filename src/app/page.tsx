@@ -87,7 +87,7 @@ export default function Home() {
 
   if (!store || !readingStore || !goalStore) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#161a22]">
+      <div className="min-h-screen flex items-center justify-center bg-[#1e2330]">
         <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -130,17 +130,17 @@ export default function Home() {
   const activeLabel = NAV_ITEMS.find((n) => n.key === activeModule)?.label ?? '';
 
   return (
-    <div className="min-h-screen bg-[#161a22] flex">
+    <div className="min-h-screen bg-[#1e2330] flex">
       {/* ===== DESKTOP SIDEBAR ===== */}
-      <aside className="hidden lg:flex flex-col w-56 border-r border-[#C4A265]/[0.06] bg-[#11151d] fixed inset-y-0 left-0 z-40">
+      <aside className="hidden lg:flex flex-col w-56 border-r border-emerald-500/[0.08] bg-[#181d28] fixed inset-y-0 left-0 z-40">
         {/* Metallic sheen overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#C4A265]/[0.02] via-transparent to-emerald-900/[0.02] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/[0.03] via-transparent to-emerald-900/[0.03] pointer-events-none" />
 
         <div className="relative px-5 pt-7 pb-10">
-          <h1 className="text-lg font-bold text-white tracking-tight">
+          <h1 className="text-lg font-bold text-white/90 tracking-tight">
             Ritual <span className="text-emerald-400">&</span> Routine
           </h1>
-          <p className="text-[9px] text-[#C4A265]/40 mt-1.5 tracking-[0.15em]">지속가능한 삶을 위한 원칙</p>
+          <p className="text-[9px] text-emerald-400/30 mt-1.5 tracking-[0.15em]">지속가능한 삶을 위한 원칙</p>
         </div>
 
         <nav className="relative flex-1 px-3 space-y-1">
@@ -150,21 +150,21 @@ export default function Home() {
               onClick={() => setActiveModule(item.key)}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 activeModule === item.key
-                  ? 'bg-emerald-500/10 text-emerald-400 shadow-[inset_0_1px_0_rgba(196,162,101,0.06)]'
-                  : 'text-white/40 hover:text-white/70 hover:bg-white/5'
+                  ? 'bg-emerald-500/12 text-emerald-400 shadow-[inset_0_1px_0_rgba(52,211,153,0.08)]'
+                  : 'text-white/50 hover:text-white/75 hover:bg-white/[0.06]'
               }`}
             >
-              <span className={activeModule === item.key ? 'text-emerald-400' : 'text-white/30'}>{item.icon}</span>
+              <span className={activeModule === item.key ? 'text-emerald-400' : 'text-white/40'}>{item.icon}</span>
               {item.label}
             </button>
           ))}
         </nav>
 
-        <div className="relative px-5 py-8 border-t border-[#C4A265]/[0.06]">
+        <div className="relative px-5 py-8 border-t border-emerald-500/[0.06]">
           <div className="space-y-1.5 text-center">
-            <p className="text-[10px] text-[#C4A265]/20">체력은 정신력.</p>
-            <p className="text-[10px] text-[#C4A265]/20">정신력은 의사결정.</p>
-            <p className="text-[10px] text-[#C4A265]/20">의사결정은 내 삶.</p>
+            <p className="text-[10px] text-emerald-300/20">체력은 정신력.</p>
+            <p className="text-[10px] text-emerald-300/20">정신력은 의사결정.</p>
+            <p className="text-[10px] text-emerald-300/20">의사결정은 내 삶.</p>
           </div>
         </div>
       </aside>
@@ -173,13 +173,13 @@ export default function Home() {
       {sidebarOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
-          <aside className="relative w-64 bg-[#11151d] border-r border-[#C4A265]/[0.06] flex flex-col">
-            <div className="absolute inset-0 bg-gradient-to-b from-[#C4A265]/[0.02] via-transparent to-emerald-900/[0.02] pointer-events-none" />
+          <aside className="relative w-64 bg-[#181d28] border-r border-emerald-500/[0.08] flex flex-col">
+            <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/[0.03] via-transparent to-emerald-900/[0.03] pointer-events-none" />
             <div className="relative px-5 pt-6 pb-6 flex items-center justify-between">
-              <h1 className="text-lg font-bold text-white tracking-tight">
+              <h1 className="text-lg font-bold text-white/90 tracking-tight">
                 Ritual <span className="text-emerald-400">&</span> Routine
               </h1>
-              <button onClick={() => setSidebarOpen(false)} className="p-1 text-white/40 hover:text-white">
+              <button onClick={() => setSidebarOpen(false)} className="p-1 text-white/50 hover:text-white">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -195,11 +195,11 @@ export default function Home() {
                   }}
                   className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all ${
                     activeModule === item.key
-                      ? 'bg-emerald-500/10 text-emerald-400'
-                      : 'text-white/40 hover:text-white/70 hover:bg-white/5'
+                      ? 'bg-emerald-500/12 text-emerald-400'
+                      : 'text-white/50 hover:text-white/75 hover:bg-white/[0.06]'
                   }`}
                 >
-                  <span className={activeModule === item.key ? 'text-emerald-400' : 'text-white/30'}>{item.icon}</span>
+                  <span className={activeModule === item.key ? 'text-emerald-400' : 'text-white/40'}>{item.icon}</span>
                   {item.label}
                 </button>
               ))}
@@ -211,17 +211,17 @@ export default function Home() {
       {/* ===== MAIN CONTENT ===== */}
       <div className="flex-1 lg:ml-56 flex flex-col min-h-screen">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 backdrop-blur-xl bg-[#161a22]/80 border-b border-[#C4A265]/[0.06]">
+        <header className="sticky top-0 z-30 backdrop-blur-xl bg-[#1e2330]/80 border-b border-emerald-500/[0.06]">
           <div className="flex items-center gap-3 px-4 lg:px-10 h-14">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 -ml-2 text-white/50 hover:text-white transition-colors"
+              className="lg:hidden p-2 -ml-2 text-white/60 hover:text-white transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <h2 className="text-sm font-semibold text-white/70 uppercase tracking-wider">{activeLabel}</h2>
+            <h2 className="text-sm font-semibold text-white/75 uppercase tracking-wider">{activeLabel}</h2>
           </div>
         </header>
 
@@ -233,7 +233,7 @@ export default function Home() {
 
           {/* Pinned Principles - right panel, visible on xl when on board */}
           {activeModule === 'board' && (
-            <aside className="hidden xl:block w-72 shrink-0 border-l border-[#C4A265]/[0.06] bg-gradient-to-b from-[#C4A265]/[0.02] via-transparent to-emerald-900/[0.01]">
+            <aside className="hidden xl:block w-72 shrink-0 border-l border-emerald-500/[0.06] bg-gradient-to-b from-emerald-500/[0.02] via-transparent to-[#272c38]/30">
               <div className="sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-8 px-5">
                 <PinnedPrinciples />
               </div>

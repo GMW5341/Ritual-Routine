@@ -59,9 +59,9 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
 
       {/* Add Form */}
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-[#272c38]/50 border border-[#313744]/50 rounded-xl p-4 space-y-4">
           <div>
-            <label className="block text-sm text-white/60 mb-2">아이콘 선택</label>
+            <label className="block text-sm text-white/65 mb-2">아이콘 선택</label>
             <div className="flex flex-wrap gap-2">
               {EMOJI_OPTIONS.map((e) => (
                 <button
@@ -69,7 +69,7 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
                   type="button"
                   onClick={() => setEmoji(e)}
                   className={`w-10 h-10 rounded-lg text-xl flex items-center justify-center transition-all ${
-                    emoji === e ? 'bg-emerald-500/30 ring-2 ring-emerald-400' : 'bg-white/5 hover:bg-white/10'
+                    emoji === e ? 'bg-emerald-500/30 ring-2 ring-emerald-400' : 'bg-[#272c38] hover:bg-[#313744]'
                   }`}
                 >
                   {e}
@@ -78,17 +78,17 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
             </div>
           </div>
           <div>
-            <label className="block text-sm text-white/60 mb-2">습관 이름</label>
+            <label className="block text-sm text-white/65 mb-2">습관 이름</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="예: 요가, 일기 쓰기..."
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/30 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50"
+              className="w-full px-4 py-3 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg text-white placeholder-white/35 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50"
             />
           </div>
           <div>
-            <label className="block text-sm text-white/60 mb-2">목표 주기</label>
+            <label className="block text-sm text-white/65 mb-2">목표 주기</label>
             <div className="flex gap-2">
               {(Object.keys(FREQ_LABELS) as HabitFrequency[]).map((f) => (
                 <button
@@ -98,14 +98,14 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
                   className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${
                     frequency === f
                       ? 'bg-emerald-500 text-white'
-                      : 'bg-white/5 text-white/40 hover:text-white/70 hover:bg-white/10'
+                      : 'bg-[#272c38] text-white/50 hover:text-white/70 hover:bg-[#313744]'
                   }`}
                 >
                   {FREQ_LABELS[f]}
                 </button>
               ))}
             </div>
-            <p className="text-[10px] text-white/25 mt-1.5">
+            <p className="text-[10px] text-white/40 mt-1.5">
               {frequency === 'daily' && '매일 수행을 목표로 합니다.'}
               {frequency === 'weekly' && '일주일에 1회 이상 수행을 목표로 합니다.'}
               {frequency === 'monthly' && '한 달에 1회 이상 수행을 목표로 합니다.'}
@@ -126,7 +126,7 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
         {store.habits.map((habit) => (
           <div
             key={habit.id}
-            className="flex items-center gap-3 p-3 bg-white/5 border border-white/10 rounded-xl"
+            className="flex items-center gap-3 p-3 bg-[#272c38]/50 border border-[#313744]/50 rounded-xl"
           >
             <span className="text-xl">{habit.emoji}</span>
             <div className="flex-1 min-w-0">
@@ -140,7 +140,7 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
                     className={`px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
                       habit.frequency === f
                         ? FREQ_COLORS[f]
-                        : 'text-white/15 hover:text-white/30'
+                        : 'text-white/25 hover:text-white/40'
                     }`}
                   >
                     {FREQ_LABELS[f]}

@@ -64,20 +64,20 @@ export default function DailyMemo({ store, date, onSave, onDelete }: Props) {
   const hasMemo = !!savedMemo;
 
   return (
-    <div className="bg-white/[0.02] border border-white/5 rounded-xl p-4 space-y-3">
+    <div className="bg-[#272c38]/30 border border-[#313744]/40 rounded-xl p-4 space-y-3">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <svg className="w-4 h-4 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
-          <span className="text-xs text-white/40">{dateLabel} 메모</span>
+          <span className="text-xs text-white/50">{dateLabel} 메모</span>
         </div>
         {hasMemo && !editing && (
           <div className="flex items-center gap-1">
             <button
               onClick={() => setEditing(true)}
-              className="px-2 py-1 text-[10px] text-white/40 hover:text-white/70 hover:bg-white/5 rounded-md transition-colors"
+              className="px-2 py-1 text-[10px] text-white/45 hover:text-white/70 hover:bg-white/[0.06] rounded-md transition-colors"
             >
               수정
             </button>
@@ -118,7 +118,7 @@ export default function DailyMemo({ store, date, onSave, onDelete }: Props) {
             onKeyDown={handleKeyDown}
             placeholder="오늘의 생각, 느낀 점, 기록하고 싶은 것..."
             rows={3}
-            className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white/80 placeholder-white/20 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 resize-none leading-relaxed"
+            className="w-full bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2.5 text-sm text-white/80 placeholder-white/30 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 resize-none leading-relaxed"
             autoFocus={editing}
           />
           <div className="flex items-center justify-end gap-2">
@@ -144,7 +144,7 @@ export default function DailyMemo({ store, date, onSave, onDelete }: Props) {
         </div>
       ) : (
         <div
-          className="text-sm text-white/60 leading-relaxed whitespace-pre-wrap cursor-pointer hover:text-white/70 transition-colors"
+          className="text-sm text-white/65 leading-relaxed whitespace-pre-wrap cursor-pointer hover:text-white/75 transition-colors"
           onClick={() => setEditing(true)}
         >
           {savedMemo}

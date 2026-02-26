@@ -11,13 +11,13 @@ export default function Philosophy() {
               체력은 정신력.
             </p>
             <div className="flex justify-center">
-              <div className="w-8 h-px bg-gradient-to-r from-emerald-500/30 to-[#C4A265]/30" />
+              <div className="w-8 h-px bg-gradient-to-r from-emerald-500/30 to-emerald-400/20" />
             </div>
             <p className="text-xl text-white/80 font-light tracking-wide leading-loose">
               정신력은 의사결정.
             </p>
             <div className="flex justify-center">
-              <div className="w-8 h-px bg-gradient-to-r from-[#C4A265]/30 to-emerald-500/30" />
+              <div className="w-8 h-px bg-gradient-to-r from-emerald-400/20 to-emerald-500/30" />
             </div>
             <p className="text-xl text-white/80 font-light tracking-wide leading-loose">
               의사결정은 내 삶.
@@ -25,7 +25,7 @@ export default function Philosophy() {
           </div>
 
           <div className="flex justify-center">
-            <div className="w-16 h-px bg-gradient-to-r from-transparent via-[#C4A265]/30 to-transparent" />
+            <div className="w-16 h-px bg-gradient-to-r from-transparent via-emerald-500/25 to-transparent" />
           </div>
 
           <p className="text-center text-lg text-emerald-400/80 font-medium tracking-[0.15em]">
@@ -37,16 +37,16 @@ export default function Philosophy() {
         <div className="flex items-center justify-center gap-3 text-white/20">
           <div className="flex flex-col items-center gap-1">
             <span className="text-2xl">🏋️</span>
-            <span className="text-[10px] tracking-wider text-[#C4A265]/40">BODY</span>
+            <span className="text-[10px] tracking-wider text-emerald-400/35">BODY</span>
           </div>
-          <svg className="w-6 h-6 text-[#C4A265]/20" fill="none" stroke="currentColor" strokeWidth={1} viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-emerald-500/25" fill="none" stroke="currentColor" strokeWidth={1} viewBox="0 0 24 24">
             <path strokeLinecap="round" d="M5 12h14m-4-4 4 4-4 4" />
           </svg>
           <div className="flex flex-col items-center gap-1">
             <span className="text-2xl">🧠</span>
-            <span className="text-[10px] tracking-wider text-[#C4A265]/40">MIND</span>
+            <span className="text-[10px] tracking-wider text-emerald-400/35">MIND</span>
           </div>
-          <svg className="w-6 h-6 text-[#C4A265]/20" fill="none" stroke="currentColor" strokeWidth={1} viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-emerald-500/25" fill="none" stroke="currentColor" strokeWidth={1} viewBox="0 0 24 24">
             <path strokeLinecap="round" d="M5 12h14m-4-4 4 4-4 4" />
           </svg>
           <div className="flex flex-col items-center gap-1">

@@ -70,7 +70,7 @@ export default function PinnedPrinciples() {
           </svg>
           <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
         </div>
-        <span className="text-xs font-bold text-white/50 uppercase tracking-[0.15em]">MY PRINCIPLES</span>
+        <span className="text-xs font-bold text-white/55 uppercase tracking-[0.15em]">MY PRINCIPLES</span>
       </div>
 
       <div className="space-y-2.5">
@@ -99,15 +99,15 @@ export default function PinnedPrinciples() {
                 </div>
               </div>
             ) : (
-              <div className="relative overflow-hidden rounded-lg border border-[#C4A265]/10 bg-gradient-to-br from-[#C4A265]/[0.04] via-transparent to-emerald-900/[0.03] p-3.5 hover:border-[#C4A265]/20 transition-all">
+              <div className="relative overflow-hidden rounded-lg border border-emerald-500/10 bg-gradient-to-br from-emerald-500/[0.04] via-[#272c38]/30 to-[#313744]/20 p-3.5 hover:border-emerald-500/20 transition-all">
                 {/* Decorative pin line */}
-                <div className="absolute top-0 left-0 w-0.5 h-full bg-gradient-to-b from-emerald-500/40 via-[#C4A265]/30 to-transparent" />
-                <p className="text-[13px] text-white/55 leading-relaxed pl-2 pr-7 font-light">{p}</p>
+                <div className="absolute top-0 left-0 w-0.5 h-full bg-gradient-to-b from-emerald-500/50 via-emerald-400/20 to-transparent" />
+                <p className="text-[13px] text-white/65 leading-relaxed pl-2 pr-7 font-light">{p}</p>
                 {/* Edit/delete on hover */}
                 <div className="absolute top-2.5 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-0.5">
                   <button
                     onClick={() => handleEdit(i)}
-                    className="p-1 text-white/25 hover:text-[#C4A265] transition-colors"
+                    className="p-1 text-white/30 hover:text-emerald-400 transition-colors"
                   >
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -115,7 +115,7 @@ export default function PinnedPrinciples() {
                   </button>
                   <button
                     onClick={() => handleDelete(i)}
-                    className="p-1 text-white/25 hover:text-red-400 transition-colors"
+                    className="p-1 text-white/30 hover:text-red-400 transition-colors"
                   >
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -134,7 +134,7 @@ export default function PinnedPrinciples() {
             value={newDraft}
             onChange={(e) => setNewDraft(e.target.value)}
             placeholder="새로운 원칙을 적어주세요..."
-            className="w-full bg-white/[0.06] border border-[#C4A265]/20 rounded-lg px-3 py-2.5 text-sm text-white/80 placeholder-white/20 resize-none focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20"
+            className="w-full bg-[#272c38]/40 border border-emerald-500/15 rounded-lg px-3 py-2.5 text-sm text-white/80 placeholder-white/30 resize-none focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20"
             rows={2}
             autoFocus
             onKeyDown={(e) => {
@@ -161,7 +161,7 @@ export default function PinnedPrinciples() {
       ) : (
         <button
           onClick={() => setAdding(true)}
-          className="mt-3 w-full py-2.5 border border-dashed border-[#C4A265]/15 rounded-lg text-[11px] text-white/25 hover:text-[#C4A265]/60 hover:border-[#C4A265]/30 transition-all"
+          className="mt-3 w-full py-2.5 border border-dashed border-emerald-500/15 rounded-lg text-[11px] text-white/35 hover:text-emerald-400/60 hover:border-emerald-500/30 transition-all"
         >
           + 원칙 추가
         </button>
@@ -170,9 +170,9 @@ export default function PinnedPrinciples() {
       {/* Decorative bottom element */}
       <div className="mt-6 pt-4 border-t border-white/[0.04]">
         <div className="flex items-center justify-center gap-2">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#C4A265]/15 to-transparent" />
-          <span className="text-[9px] text-[#C4A265]/30 tracking-[0.2em]">RITUAL</span>
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#C4A265]/15 to-transparent" />
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-emerald-500/15 to-transparent" />
+          <span className="text-[9px] text-emerald-400/30 tracking-[0.2em]">RITUAL</span>
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-emerald-500/15 to-transparent" />
         </div>
       </div>
     </div>

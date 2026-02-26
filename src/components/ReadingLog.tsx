@@ -86,10 +86,10 @@ export default function ReadingLog({
           { label: '독서 노트', value: stats.totalNotes, unit: '개', color: 'text-amber-400' },
           { label: '총 페이지', value: stats.totalPages, unit: 'p', color: 'text-blue-400' },
         ].map((stat) => (
-          <div key={stat.label} className="bg-white/[0.02] border border-white/5 rounded-xl p-3 text-center">
-            <p className="text-[10px] text-white/30 uppercase tracking-wider">{stat.label}</p>
+          <div key={stat.label} className="bg-[#272c38]/50 border border-[#313744]/50 rounded-xl p-3 text-center">
+            <p className="text-[10px] text-white/45 uppercase tracking-wider">{stat.label}</p>
             <p className={`text-xl font-bold mt-1 ${stat.color}`}>
-              {stat.value}<span className="text-xs font-normal text-white/20 ml-0.5">{stat.unit}</span>
+              {stat.value}<span className="text-xs font-normal text-white/35 ml-0.5">{stat.unit}</span>
             </p>
           </div>
         ))}
@@ -97,13 +97,13 @@ export default function ReadingLog({
 
       {/* Filter tabs + Add button */}
       <div className="flex items-center justify-between">
-        <div className="flex gap-1 bg-white/5 p-0.5 rounded-lg">
+        <div className="flex gap-1 bg-[#272c38]/60 p-0.5 rounded-lg">
           {FILTER_TABS.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setFilter(tab.key)}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-                filter === tab.key ? 'bg-emerald-500 text-white' : 'text-white/50 hover:text-white/80'
+                filter === tab.key ? 'bg-emerald-500 text-white' : 'text-white/55 hover:text-white/80'
               }`}
             >
               {tab.label}
@@ -139,17 +139,17 @@ export default function ReadingLog({
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 text-white/20">
+        <div className="text-center py-16 text-white/35">
           <p className="text-3xl mb-3">📚</p>
           <p className="text-sm">
             {filter === 'all' ? '아직 등록된 책이 없습니다.' : `${FILTER_TABS.find((t) => t.key === filter)?.label} 책이 없습니다.`}
           </p>
-          <p className="text-xs mt-1 text-white/15">위의 &quot;새 책&quot; 버튼으로 추가해보세요.</p>
+          <p className="text-xs mt-1 text-white/25">위의 &quot;새 책&quot; 버튼으로 추가해보세요.</p>
         </div>
       )}
 
       {/* Notion integration */}
-      <div className="border-t border-white/5 pt-6">
+      <div className="border-t border-[#313744]/50 pt-6">
         <NotionConnect
           readingStore={readingStore}
           onSetNotion={onSetNotion}
@@ -191,7 +191,7 @@ function BookCard({
   return (
     <button
       onClick={onClick}
-      className="flex items-start gap-3 p-4 bg-white/[0.02] border border-white/5 rounded-xl hover:border-white/10 hover:bg-white/[0.04] transition-all text-left w-full group"
+      className="flex items-start gap-3 p-4 bg-[#272c38]/40 border border-[#313744]/50 rounded-xl hover:border-emerald-500/15 hover:bg-[#272c38]/70 transition-all text-left w-full group"
     >
       {/* Book spine visual */}
       <div
@@ -204,9 +204,9 @@ function BookCard({
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <h3 className="text-sm font-semibold text-white/80 truncate">{book.title}</h3>
+            <h3 className="text-sm font-semibold text-white/85 truncate">{book.title}</h3>
             {book.author && (
-              <p className="text-[11px] text-white/30 mt-0.5 truncate">{book.author}</p>
+              <p className="text-[11px] text-white/45 mt-0.5 truncate">{book.author}</p>
             )}
           </div>
           <span className={`text-[9px] px-1.5 py-0.5 rounded-full shrink-0 ${statusColor[book.status]}`}>
@@ -238,14 +238,14 @@ function BookCard({
 
           {/* Note count */}
           {noteCount > 0 && (
-            <span className="text-[10px] text-white/25">
+            <span className="text-[10px] text-white/40">
               {noteCount}개 노트
             </span>
           )}
         </div>
       </div>
 
-      <svg className="w-4 h-4 text-white/15 group-hover:text-white/30 transition-colors shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="w-4 h-4 text-white/25 group-hover:text-white/45 transition-colors shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
       </svg>
     </button>

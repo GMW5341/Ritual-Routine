@@ -107,12 +107,12 @@ export default function SleepTracker({ store, onSave }: Props) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-lg">😴</span>
-          <span className="text-xs text-white/40">오늘의 수면</span>
+          <span className="text-xs text-white/50">오늘의 수면</span>
         </div>
         {!editing && (todayRecord?.sleep?.wakeTime || todayRecord?.sleep?.sleepTime) && (
           <button
             onClick={() => setEditing(true)}
-            className="px-2 py-1 text-[10px] text-white/40 hover:text-white/70 hover:bg-white/5 rounded-md transition-colors"
+            className="px-2 py-1 text-[10px] text-white/45 hover:text-white/70 hover:bg-white/[0.06] rounded-md transition-colors"
           >
             수정
           </button>
@@ -122,21 +122,21 @@ export default function SleepTracker({ store, onSave }: Props) {
       {editing ? (
         <div className="flex flex-wrap items-end gap-3">
           <div className="flex-1 min-w-[100px]">
-            <label className="block text-[10px] text-white/30 mb-1">취침 (어젯밤)</label>
+            <label className="block text-[10px] text-white/45 mb-1">취침 (어젯밤)</label>
             <input
               type="time"
               value={sleepTime}
               onChange={(e) => setSleepTime(e.target.value)}
-              className="w-full px-3 py-2 bg-white/[0.03] border border-white/10 rounded-lg text-sm text-white/80 focus:outline-none focus:border-violet-500/50 [color-scheme:dark]"
+              className="w-full px-3 py-2 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg text-sm text-white/80 focus:outline-none focus:border-violet-500/50 [color-scheme:dark]"
             />
           </div>
           <div className="flex-1 min-w-[100px]">
-            <label className="block text-[10px] text-white/30 mb-1">기상</label>
+            <label className="block text-[10px] text-white/45 mb-1">기상</label>
             <input
               type="time"
               value={wakeTime}
               onChange={(e) => setWakeTime(e.target.value)}
-              className="w-full px-3 py-2 bg-white/[0.03] border border-white/10 rounded-lg text-sm text-white/80 focus:outline-none focus:border-emerald-500/50 [color-scheme:dark]"
+              className="w-full px-3 py-2 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg text-sm text-white/80 focus:outline-none focus:border-emerald-500/50 [color-scheme:dark]"
             />
           </div>
           <button
@@ -170,7 +170,7 @@ export default function SleepTracker({ store, onSave }: Props) {
             </div>
           )}
           {!todayRecord?.sleep?.wakeTime && !todayRecord?.sleep?.sleepTime && (
-            <span className="text-white/20 text-xs">기록 없음</span>
+            <span className="text-white/35 text-xs">기록 없음</span>
           )}
         </div>
       )}
@@ -178,7 +178,7 @@ export default function SleepTracker({ store, onSave }: Props) {
       {/* Dot chart */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] text-white/30 uppercase tracking-wider">최근 2주 수면 패턴</span>
+          <span className="text-[10px] text-white/45 uppercase tracking-wider">최근 2주 수면 패턴</span>
           {avgHours !== null && (
             <span className="text-[10px] text-white/30">평균 <span className="text-emerald-400/70 font-medium">{avgHours}시간</span></span>
           )}
@@ -187,7 +187,7 @@ export default function SleepTracker({ store, onSave }: Props) {
           {/* Y axis labels */}
           <div className="flex flex-col justify-between pr-2 shrink-0" style={{ height: '140px' }}>
             {yLabels.map((l) => (
-              <span key={l.label} className="text-[9px] text-white/15 leading-none">{l.label}</span>
+              <span key={l.label} className="text-[9px] text-white/25 leading-none">{l.label}</span>
             ))}
           </div>
 
@@ -231,7 +231,7 @@ export default function SleepTracker({ store, onSave }: Props) {
                     />
                   )}
                   {/* Tooltip */}
-                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-[#11151d]/95 border border-white/5 rounded text-[9px] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-[#1e2330]/95 border border-[#313744]/60 rounded text-[9px] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
                     {d.date} {d.hours !== null ? `${d.hours}h` : ''}
                   </div>
                 </div>
@@ -242,7 +242,7 @@ export default function SleepTracker({ store, onSave }: Props) {
             <div className="absolute -bottom-4 left-0 right-0 flex">
               {chartData.map((d, i) => (
                 <div key={i} className="flex-1 text-center">
-                  <span className={`text-[8px] ${d.isToday ? 'text-emerald-400 font-bold' : 'text-white/15'}`}>
+                  <span className={`text-[8px] ${d.isToday ? 'text-emerald-400 font-bold' : 'text-white/25'}`}>
                     {i % 2 === 0 ? d.date : ''}
                   </span>
                 </div>
@@ -252,7 +252,7 @@ export default function SleepTracker({ store, onSave }: Props) {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center justify-center gap-4 mt-6 text-[9px] text-white/25">
+        <div className="flex items-center justify-center gap-4 mt-6 text-[9px] text-white/40">
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full bg-violet-500/70" />
             <span>취침</span>

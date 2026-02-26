@@ -61,8 +61,8 @@ export default function DailyGauge({ store }: Props) {
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-4xl font-bold text-white">{rate}</span>
-          <span className="text-xs text-white/40 -mt-0.5">%</span>
-          <span className="text-[10px] text-white/30 mt-1">{completed} / {total} 완료</span>
+          <span className="text-xs text-white/50 -mt-0.5">%</span>
+          <span className="text-[10px] text-white/45 mt-1">{completed} / {total} 완료</span>
         </div>
       </div>
 
@@ -74,7 +74,7 @@ export default function DailyGauge({ store }: Props) {
             <div
               key={habit.id}
               className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all ${
-                done ? 'bg-emerald-500/10' : 'bg-white/[0.02] opacity-30'
+                done ? 'bg-emerald-500/10' : 'bg-[#272c38]/40 opacity-40'
               }`}
             >
               <span className="text-lg">{habit.emoji}</span>
@@ -97,7 +97,7 @@ export default function DailyGauge({ store }: Props) {
                   style={{ height: `${Math.max(d.rate, 2)}%` }}
                 />
               </div>
-              <span className={`text-[9px] ${d.isToday ? 'text-emerald-400 font-bold' : 'text-white/25'}`}>
+              <span className={`text-[9px] ${d.isToday ? 'text-emerald-400 font-bold' : 'text-white/35'}`}>
                 {d.label}
               </span>
             </div>
