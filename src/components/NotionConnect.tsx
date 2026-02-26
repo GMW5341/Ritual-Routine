@@ -114,7 +114,7 @@ export default function NotionConnect({ readingStore, onSetNotion, onDisconnect 
             </button>
             <button
               onClick={() => setShowConfig(true)}
-              className="px-2 py-1 text-[10px] text-white/30 hover:text-white/60 hover:bg-white/5 rounded-md transition-colors"
+              className="px-2 py-1 text-[10px] text-white/50 hover:text-white/80 hover:bg-white/5 rounded-md transition-colors"
             >
               설정
             </button>
@@ -122,7 +122,7 @@ export default function NotionConnect({ readingStore, onSetNotion, onDisconnect 
         ) : !showConfig ? (
           <button
             onClick={() => setShowConfig(true)}
-            className="px-3 py-1 text-[10px] font-medium text-white/45 hover:text-white/70 border border-[#313744]/60 hover:border-emerald-500/20 rounded-md transition-colors"
+            className="px-3 py-1 text-[10px] font-medium text-white/45 hover:text-white/90 border border-[#313744]/60 hover:border-emerald-500/20 rounded-md transition-colors"
           >
             연결하기
           </button>
@@ -138,7 +138,7 @@ export default function NotionConnect({ readingStore, onSetNotion, onDisconnect 
 
       {/* Last sync info */}
       {isConnected && notion?.lastSyncAt && !showConfig && (
-        <p className="text-[10px] text-white/35">
+        <p className="text-[10px] text-white/55">
           마지막 동기화: {new Date(notion.lastSyncAt).toLocaleString('ko-KR')}
         </p>
       )}
@@ -149,28 +149,28 @@ export default function NotionConnect({ readingStore, onSetNotion, onDisconnect 
           <p className="text-[11px] text-white/45 leading-relaxed">
             Notion Integration Token과 Database ID를 입력하세요.
             <br />
-            <span className="text-white/35">노션 설정 &gt; 연결 &gt; 내부 통합에서 토큰을 발급받을 수 있습니다.</span>
+            <span className="text-white/55">노션 설정 &gt; 연결 &gt; 내부 통합에서 토큰을 발급받을 수 있습니다.</span>
           </p>
 
           <div>
-            <label className="text-[10px] text-white/50 uppercase tracking-wider">Integration Token</label>
+            <label className="text-[10px] text-white/70 uppercase tracking-wider">Integration Token</label>
             <input
               type="password"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               placeholder="ntn_..."
-              className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-xs text-white/80 placeholder-white/30 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 font-mono"
+              className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-xs text-white placeholder-white/50 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 font-mono"
             />
           </div>
 
           <div>
-            <label className="text-[10px] text-white/50 uppercase tracking-wider">Database ID</label>
+            <label className="text-[10px] text-white/70 uppercase tracking-wider">Database ID</label>
             <input
               type="text"
               value={databaseId}
               onChange={(e) => setDatabaseId(e.target.value)}
               placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-              className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-xs text-white/80 placeholder-white/30 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 font-mono"
+              className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-xs text-white placeholder-white/50 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 font-mono"
             />
           </div>
 
@@ -186,14 +186,14 @@ export default function NotionConnect({ readingStore, onSetNotion, onDisconnect 
             <div className="flex gap-2 ml-auto">
               <button
                 onClick={() => setShowConfig(false)}
-                className="px-3 py-1.5 text-xs text-white/40 hover:text-white/70 hover:bg-white/5 rounded-lg transition-colors"
+                className="px-3 py-1.5 text-xs text-white/60 hover:text-white/90 hover:bg-white/5 rounded-lg transition-colors"
               >
                 취소
               </button>
               <button
                 onClick={handleConnect}
                 disabled={!apiKey.trim() || !databaseId.trim()}
-                className="px-4 py-1.5 text-xs font-medium bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/5 disabled:text-white/20 text-white rounded-lg transition-colors"
+                className="px-4 py-1.5 text-xs font-medium bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/5 disabled:text-white/40 text-white rounded-lg transition-colors"
               >
                 저장
               </button>

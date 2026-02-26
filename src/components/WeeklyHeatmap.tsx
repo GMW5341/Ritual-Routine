@@ -34,7 +34,7 @@ export default function WeeklyHeatmap({ store }: Props) {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-white/70 uppercase tracking-wider">최근 4주 히트맵</h3>
+      <h3 className="text-sm font-semibold text-white/90 uppercase tracking-wider">최근 4주 히트맵</h3>
       <div className="grid grid-cols-7 gap-1.5">
         {['월', '화', '수', '목', '금', '토', '일'].map((d) => (
           <div key={d} className="text-center text-xs text-white/45 pb-1">{d}</div>

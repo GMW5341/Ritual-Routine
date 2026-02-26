@@ -127,7 +127,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-center lg:items-start">
         {/* Gauge */}
         <div className="flex flex-col items-center gap-4 shrink-0">
-          <p className="text-sm font-medium text-white/70">
+          <p className="text-sm font-medium text-white/90">
             {format(today, 'M월 d일 EEEE', { locale: ko })}
           </p>
           <div className="relative w-36 h-36">
@@ -157,7 +157,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                     style={{ height: `${Math.max(d.rate, 4)}%` }}
                   />
                 </div>
-                <span className={`text-[8px] ${d.isToday ? 'text-emerald-400 font-bold' : 'text-white/20'}`}>
+                <span className={`text-[8px] ${d.isToday ? 'text-emerald-400 font-bold' : 'text-white/40'}`}>
                   {d.label}
                 </span>
               </div>
@@ -183,7 +183,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                     }`}
                   >
                     <span className="text-xl">{habit.emoji}</span>
-                    <span className={`text-[9px] truncate w-full text-center ${done ? 'text-emerald-300/80' : 'text-white/50'}`}>
+                    <span className={`text-[9px] truncate w-full text-center ${done ? 'text-emerald-300/80' : 'text-white/70'}`}>
                       {habit.name}
                     </span>
                   </button>
@@ -212,7 +212,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
           <button
             onClick={() => setMode('week')}
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-              mode === 'week' ? 'bg-emerald-500 text-white' : 'text-white/55 hover:text-white/80'
+              mode === 'week' ? 'bg-emerald-500 text-white' : 'text-white/55 hover:text-white'
             }`}
           >
             주간
@@ -220,7 +220,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
           <button
             onClick={() => setMode('month')}
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-              mode === 'month' ? 'bg-emerald-500 text-white' : 'text-white/55 hover:text-white/80'
+              mode === 'month' ? 'bg-emerald-500 text-white' : 'text-white/55 hover:text-white'
             }`}
           >
             월간
@@ -246,7 +246,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
         <table className="w-full border-collapse min-w-max">
           <thead>
             <tr>
-              <th className="sticky left-0 z-10 bg-[#1e2330] text-left text-xs text-white/50 font-medium py-2 pr-3 min-w-[120px]">
+              <th className="sticky left-0 z-10 bg-[#1e2330] text-left text-xs text-white/70 font-medium py-2 pr-3 min-w-[120px]">
                 습관
               </th>
               {days.map((d) => {
@@ -260,7 +260,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                   <th
                     key={ds}
                     className={`text-center text-[10px] font-medium py-2 px-0.5 min-w-[32px] cursor-pointer transition-colors ${
-                      isSelected ? 'text-emerald-400' : isToday ? 'text-emerald-400' : isSun ? 'text-red-400/70' : isSat ? 'text-blue-400/70' : 'text-white/40'
+                      isSelected ? 'text-emerald-400' : isToday ? 'text-emerald-400' : isSun ? 'text-red-400/70' : isSat ? 'text-blue-400/70' : 'text-white/60'
                     }`}
                     onClick={() => setSelectedMemoDate(ds)}
                   >
@@ -276,7 +276,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                   </th>
                 );
               })}
-              <th className="text-center text-[10px] text-white/50 font-medium py-2 px-2 min-w-[40px]">
+              <th className="text-center text-[10px] text-white/70 font-medium py-2 px-2 min-w-[40px]">
                 달성률
               </th>
             </tr>
@@ -312,8 +312,8 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                             done
                               ? 'bg-emerald-500/30 text-emerald-400'
                               : isTodayCell
-                              ? 'bg-[#272c38] hover:bg-[#313744] text-white/25'
-                              : 'bg-[#272c38]/40 hover:bg-[#272c38] text-white/15'
+                              ? 'bg-[#272c38] hover:bg-[#313744] text-white/45'
+                              : 'bg-[#272c38]/40 hover:bg-[#272c38] text-white/35'
                           }`}
                         >
                           {done ? (
@@ -331,7 +331,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                     <span className={`text-xs font-bold ${
                       (rateInfo?.rate ?? 0) >= 80 ? 'text-emerald-400' :
                       (rateInfo?.rate ?? 0) >= 50 ? 'text-amber-400' :
-                      'text-white/30'
+                      'text-white/50'
                     }`}>
                       {rateInfo?.rate ?? 0}%
                     </span>
@@ -348,7 +348,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
               {dayRates.map((rate, i) => (
                 <td key={i} className="text-center py-2 px-0.5">
                   <span className={`text-[10px] font-medium ${
-                    rate >= 80 ? 'text-emerald-400' : rate >= 50 ? 'text-amber-400' : rate > 0 ? 'text-white/30' : 'text-white/10'
+                    rate >= 80 ? 'text-emerald-400' : rate >= 50 ? 'text-amber-400' : rate > 0 ? 'text-white/50' : 'text-white/25'
                   }`}>
                     {rate > 0 ? `${rate}` : '-'}
                   </span>
@@ -382,10 +382,10 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
         return (
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
-              <span className="text-xs text-white/50">
+              <span className="text-xs text-white/70">
                 {mode === 'week' ? '주간' : '월간'} 메모 ({memoDays.length})
               </span>
             </div>
@@ -405,14 +405,14 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                       }`}
                     >
                       <div className="flex items-center gap-2 mb-1">
-                        <span className={`text-[10px] font-medium ${isSelected ? 'text-emerald-400' : 'text-white/50'}`}>
+                        <span className={`text-[10px] font-medium ${isSelected ? 'text-emerald-400' : 'text-white/70'}`}>
                           {format(day, 'M/d (E)', { locale: ko })}
                         </span>
                         {date === todayStr && (
                           <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">오늘</span>
                         )}
                       </div>
-                      <p className={`text-xs leading-relaxed line-clamp-2 ${isSelected ? 'text-white/75' : 'text-white/50'}`}>
+                      <p className={`text-xs leading-relaxed line-clamp-2 ${isSelected ? 'text-white/75' : 'text-white/70'}`}>
                         {memo}
                       </p>
                     </button>
@@ -420,7 +420,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                 })}
               </div>
             ) : (
-              <p className="text-xs text-white/35 py-2">이 기간에 작성된 메모가 없습니다.</p>
+              <p className="text-xs text-white/55 py-2">이 기간에 작성된 메모가 없습니다.</p>
             )}
           </div>
         );

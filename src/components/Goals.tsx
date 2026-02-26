@@ -123,7 +123,7 @@ export default function Goals({ goalStore, onAdd, onUpdate, onRemove }: Props) {
               key={tab.key}
               onClick={() => setActiveTerm(tab.key)}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-                activeTerm === tab.key ? 'bg-emerald-500 text-white' : 'text-white/55 hover:text-white/80'
+                activeTerm === tab.key ? 'bg-emerald-500 text-white' : 'text-white/55 hover:text-white'
               }`}
             >
               {tab.label}
@@ -137,7 +137,7 @@ export default function Goals({ goalStore, onAdd, onUpdate, onRemove }: Props) {
             className={`px-2.5 py-1 text-[10px] rounded-md border transition-colors ${
               showCompleted
                 ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10'
-                : 'border-[#313744]/60 text-white/40 hover:text-white/60'
+                : 'border-[#313744]/60 text-white/60 hover:text-white/80'
             }`}
           >
             {showCompleted ? '완료 포함' : '완료 숨김'}
@@ -160,33 +160,33 @@ export default function Goals({ goalStore, onAdd, onUpdate, onRemove }: Props) {
           <h3 className="text-sm font-semibold text-white/85">새 목표 추가</h3>
           <form onSubmit={handleSubmit} className="space-y-3">
             <div>
-              <label className="text-[10px] text-white/50 uppercase tracking-wider">목표 *</label>
+              <label className="text-[10px] text-white/70 uppercase tracking-wider">목표 *</label>
               <input
                 type="text"
                 value={formTitle}
                 onChange={(e) => setFormTitle(e.target.value)}
                 placeholder="달성하고 싶은 목표"
-                className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-sm text-white/80 placeholder-white/30 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30"
+                className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-sm text-white placeholder-white/50 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30"
                 autoFocus
               />
             </div>
             <div>
-              <label className="text-[10px] text-white/50 uppercase tracking-wider">세부 설명</label>
+              <label className="text-[10px] text-white/70 uppercase tracking-wider">세부 설명</label>
               <textarea
                 value={formDesc}
                 onChange={(e) => setFormDesc(e.target.value)}
                 placeholder="구체적인 계획이나 방법 (선택)"
                 rows={2}
-                className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-sm text-white/80 placeholder-white/30 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 resize-none"
+                className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-sm text-white placeholder-white/50 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 resize-none"
               />
             </div>
             <div className="flex gap-3">
               <div className="flex-1">
-                <label className="text-[10px] text-white/50 uppercase tracking-wider">기간</label>
+                <label className="text-[10px] text-white/70 uppercase tracking-wider">기간</label>
                 <select
                   value={formTerm}
                   onChange={(e) => setFormTerm(e.target.value as GoalTerm)}
-                  className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-sm text-white/80 focus:outline-none focus:border-emerald-500/30"
+                  className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/30"
                 >
                   <option value="short" className="bg-[#272c38]">단기 (~3개월)</option>
                   <option value="mid" className="bg-[#272c38]">중기 (3~12개월)</option>
@@ -194,23 +194,23 @@ export default function Goals({ goalStore, onAdd, onUpdate, onRemove }: Props) {
                 </select>
               </div>
               <div className="flex-1">
-                <label className="text-[10px] text-white/50 uppercase tracking-wider">목표일</label>
+                <label className="text-[10px] text-white/70 uppercase tracking-wider">목표일</label>
                 <input
                   type="date"
                   value={formDeadline}
                   onChange={(e) => setFormDeadline(e.target.value)}
-                  className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-sm text-white/80 focus:outline-none focus:border-emerald-500/30 [color-scheme:dark]"
+                  className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/30 [color-scheme:dark]"
                 />
               </div>
             </div>
             <div className="flex justify-end gap-2 pt-1">
-              <button type="button" onClick={resetForm} className="px-3 py-1.5 text-xs text-white/40 hover:text-white/70 hover:bg-white/5 rounded-lg transition-colors">
+              <button type="button" onClick={resetForm} className="px-3 py-1.5 text-xs text-white/60 hover:text-white/90 hover:bg-white/5 rounded-lg transition-colors">
                 취소
               </button>
               <button
                 type="submit"
                 disabled={!formTitle.trim()}
-                className="px-4 py-1.5 text-xs font-medium bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/5 disabled:text-white/20 text-white rounded-lg transition-colors"
+                className="px-4 py-1.5 text-xs font-medium bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/5 disabled:text-white/40 text-white rounded-lg transition-colors"
               >
                 추가
               </button>
@@ -236,12 +236,12 @@ export default function Goals({ goalStore, onAdd, onUpdate, onRemove }: Props) {
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 text-white/35">
+        <div className="text-center py-16 text-white/55">
           <p className="text-3xl mb-3">🎯</p>
           <p className="text-sm">
             {activeTerm === 'all' ? '아직 설정한 목표가 없습니다.' : `${TERM_TABS.find((t) => t.key === activeTerm)?.label} 목표가 없습니다.`}
           </p>
-          <p className="text-xs mt-1 text-white/25">위의 &quot;새 목표&quot; 버튼으로 추가해보세요.</p>
+          <p className="text-xs mt-1 text-white/45">위의 &quot;새 목표&quot; 버튼으로 추가해보세요.</p>
         </div>
       )}
     </div>
@@ -298,7 +298,7 @@ function GoalCard({
             type="text"
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
-            className="w-full bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-sm text-white/80 focus:outline-none focus:border-emerald-500/30"
+            className="w-full bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/30"
             autoFocus
           />
           <textarea
@@ -306,10 +306,10 @@ function GoalCard({
             onChange={(e) => setEditDesc(e.target.value)}
             placeholder="세부 설명 (선택)"
             rows={2}
-            className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-xs text-white/60 placeholder-white/20 focus:outline-none focus:border-emerald-500/30 resize-none"
+            className="w-full bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-xs text-white/80 placeholder-white/40 focus:outline-none focus:border-emerald-500/30 resize-none"
           />
           <div className="flex justify-end gap-2">
-            <button onClick={onStopEdit} className="px-2 py-1 text-[10px] text-white/40 hover:bg-white/5 rounded-md">취소</button>
+            <button onClick={onStopEdit} className="px-2 py-1 text-[10px] text-white/60 hover:bg-white/5 rounded-md">취소</button>
             <button onClick={handleSaveEdit} className="px-3 py-1 text-[10px] font-medium bg-emerald-500 text-white rounded-md">저장</button>
           </div>
         </div>
@@ -342,14 +342,14 @@ function GoalCard({
                   {TERM_LABELS[goal.term]}
                 </span>
                 {deadlineStr && (
-                  <span className={`text-[9px] ${isOverdue ? 'text-red-400' : 'text-white/40'}`}>
+                  <span className={`text-[9px] ${isOverdue ? 'text-red-400' : 'text-white/60'}`}>
                     {isOverdue ? '기한 초과 ' : ''}{deadlineStr}
                   </span>
                 )}
               </div>
 
               {goal.description && (
-                <p className="text-xs text-white/50 mt-1 leading-relaxed whitespace-pre-wrap">{goal.description}</p>
+                <p className="text-xs text-white/70 mt-1 leading-relaxed whitespace-pre-wrap">{goal.description}</p>
               )}
 
               {/* Progress bar */}
@@ -381,7 +381,7 @@ function GoalCard({
 
             {/* Actions */}
             <div className="flex items-center gap-1 shrink-0">
-              <button onClick={onStartEdit} className="p-1 text-white/30 hover:text-white/60 transition-colors">
+              <button onClick={onStartEdit} className="p-1 text-white/50 hover:text-white/80 transition-colors">
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
@@ -389,10 +389,10 @@ function GoalCard({
               {confirmDelete ? (
                 <div className="flex items-center gap-0.5">
                   <button onClick={() => onRemove(goal.id)} className="px-1.5 py-0.5 text-[9px] text-red-400 hover:bg-red-500/10 rounded">삭제</button>
-                  <button onClick={() => setConfirmDelete(false)} className="px-1.5 py-0.5 text-[9px] text-white/30 hover:bg-white/5 rounded">취소</button>
+                  <button onClick={() => setConfirmDelete(false)} className="px-1.5 py-0.5 text-[9px] text-white/50 hover:bg-white/5 rounded">취소</button>
                 </div>
               ) : (
-                <button onClick={() => setConfirmDelete(true)} className="p-1 text-white/30 hover:text-red-400 transition-colors">
+                <button onClick={() => setConfirmDelete(true)} className="p-1 text-white/50 hover:text-red-400 transition-colors">
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>

@@ -7,19 +7,19 @@ export default function Philosophy() {
         {/* Main philosophy */}
         <div className="space-y-8">
           <div className="space-y-6 text-center">
-            <p className="text-xl text-white/80 font-light tracking-wide leading-loose">
+            <p className="text-xl text-white font-light tracking-wide leading-loose">
               체력은 정신력.
             </p>
             <div className="flex justify-center">
               <div className="w-8 h-px bg-gradient-to-r from-emerald-500/30 to-emerald-400/20" />
             </div>
-            <p className="text-xl text-white/80 font-light tracking-wide leading-loose">
+            <p className="text-xl text-white font-light tracking-wide leading-loose">
               정신력은 의사결정.
             </p>
             <div className="flex justify-center">
               <div className="w-8 h-px bg-gradient-to-r from-emerald-400/20 to-emerald-500/30" />
             </div>
-            <p className="text-xl text-white/80 font-light tracking-wide leading-loose">
+            <p className="text-xl text-white font-light tracking-wide leading-loose">
               의사결정은 내 삶.
             </p>
           </div>
@@ -34,7 +34,7 @@ export default function Philosophy() {
         </div>
 
         {/* Visual chain */}
-        <div className="flex items-center justify-center gap-3 text-white/20">
+        <div className="flex items-center justify-center gap-3 text-white/40">
           <div className="flex flex-col items-center gap-1">
             <span className="text-2xl">🏋️</span>
             <span className="text-[10px] tracking-wider text-emerald-400/35">BODY</span>

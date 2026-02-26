@@ -97,7 +97,7 @@ export default function ReadingNoteEditor({
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-start gap-4">
-        <button onClick={onBack} className="mt-1 p-1 text-white/50 hover:text-white/75 transition-colors shrink-0">
+        <button onClick={onBack} className="mt-1 p-1 text-white/70 hover:text-white/75 transition-colors shrink-0">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
@@ -110,7 +110,7 @@ export default function ReadingNoteEditor({
             />
             <div className="min-w-0">
               <h2 className="text-lg font-bold text-white truncate">{book.title}</h2>
-              {book.author && <p className="text-xs text-white/50">{book.author}</p>}
+              {book.author && <p className="text-xs text-white/70">{book.author}</p>}
             </div>
           </div>
 
@@ -133,7 +133,7 @@ export default function ReadingNoteEditor({
                   key={star}
                   onClick={() => onUpdateBook(book.id, { rating: book.rating === star ? undefined : star })}
                   className={`text-sm transition-colors ${
-                    star <= (book.rating ?? 0) ? 'text-amber-400' : 'text-white/25 hover:text-white/40'
+                    star <= (book.rating ?? 0) ? 'text-amber-400' : 'text-white/45 hover:text-white/60'
                   }`}
                 >
                   ★
@@ -144,12 +144,12 @@ export default function ReadingNoteEditor({
             {confirmDeleteBook ? (
               <div className="flex items-center gap-1 ml-auto">
                 <button onClick={handleDeleteBook} className="px-2 py-1 text-[10px] text-red-400 hover:bg-red-500/10 rounded-md">삭제</button>
-                <button onClick={() => setConfirmDeleteBook(false)} className="px-2 py-1 text-[10px] text-white/40 hover:bg-white/5 rounded-md">취소</button>
+                <button onClick={() => setConfirmDeleteBook(false)} className="px-2 py-1 text-[10px] text-white/60 hover:bg-white/5 rounded-md">취소</button>
               </div>
             ) : (
               <button
                 onClick={() => setConfirmDeleteBook(true)}
-                className="ml-auto text-[10px] text-white/35 hover:text-red-400 transition-colors"
+                className="ml-auto text-[10px] text-white/55 hover:text-red-400 transition-colors"
               >
                 책 삭제
               </button>
@@ -159,7 +159,7 @@ export default function ReadingNoteEditor({
           {/* Progress bar */}
           {book.totalPages && (
             <div className="mt-3">
-              <div className="flex items-center justify-between text-[10px] text-white/50 mb-1">
+              <div className="flex items-center justify-between text-[10px] text-white/70 mb-1">
                 <span>진행률</span>
                 <span>{progress}% · {totalRead}/{book.totalPages}p</span>
               </div>
@@ -198,7 +198,7 @@ export default function ReadingNoteEditor({
             onChange={(e) => setNoteContent(e.target.value)}
             placeholder="읽은 내용 정리, 인상 깊은 구절, 생각..."
             rows={4}
-            className="w-full bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2.5 text-sm text-white/80 placeholder-white/30 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 resize-none leading-relaxed"
+            className="w-full bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/50 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 resize-none leading-relaxed"
             autoFocus
           />
           <div className="flex gap-3">
@@ -210,7 +210,7 @@ export default function ReadingNoteEditor({
                 onChange={(e) => setPagesRead(e.target.value)}
                 placeholder="예: 30"
                 min="0"
-                className="w-full mt-0.5 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-1.5 text-xs text-white/80 placeholder-white/30 focus:outline-none focus:border-emerald-500/30"
+                className="w-full mt-0.5 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-1.5 text-xs text-white placeholder-white/50 focus:outline-none focus:border-emerald-500/30"
               />
             </div>
             <div className="flex-1">
@@ -221,18 +221,18 @@ export default function ReadingNoteEditor({
                 onChange={(e) => setCurrentPage(e.target.value)}
                 placeholder="예: 120"
                 min="0"
-                className="w-full mt-0.5 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-1.5 text-xs text-white/80 placeholder-white/30 focus:outline-none focus:border-emerald-500/30"
+                className="w-full mt-0.5 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-1.5 text-xs text-white placeholder-white/50 focus:outline-none focus:border-emerald-500/30"
               />
             </div>
           </div>
           <div className="flex justify-end gap-2">
-            <button onClick={resetForm} className="px-3 py-1.5 text-xs text-white/40 hover:text-white/70 hover:bg-white/5 rounded-lg transition-colors">
+            <button onClick={resetForm} className="px-3 py-1.5 text-xs text-white/60 hover:text-white/90 hover:bg-white/5 rounded-lg transition-colors">
               취소
             </button>
             <button
               onClick={handleSubmitNote}
               disabled={!noteContent.trim()}
-              className="px-4 py-1.5 text-xs font-medium bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/5 disabled:text-white/20 text-white rounded-lg transition-colors"
+              className="px-4 py-1.5 text-xs font-medium bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/5 disabled:text-white/40 text-white rounded-lg transition-colors"
             >
               {editingNoteId ? '수정' : '저장'}
             </button>
@@ -250,12 +250,12 @@ export default function ReadingNoteEditor({
                 <div className="flex items-center gap-2 text-[10px] text-white/45">
                   <span>{format(new Date(note.date + 'T00:00:00'), 'M월 d일 (E)', { locale: ko })}</span>
                   {note.pagesRead && <span className="text-emerald-400/60">+{note.pagesRead}p</span>}
-                  {note.currentPage && <span className="text-white/35">p.{note.currentPage}</span>}
+                  {note.currentPage && <span className="text-white/55">p.{note.currentPage}</span>}
                 </div>
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
                     onClick={() => startEdit(note)}
-                    className="px-2 py-0.5 text-[10px] text-white/45 hover:text-white/60 hover:bg-white/5 rounded-md"
+                    className="px-2 py-0.5 text-[10px] text-white/45 hover:text-white/80 hover:bg-white/5 rounded-md"
                   >
                     수정
                   </button>
@@ -273,7 +273,7 @@ export default function ReadingNoteEditor({
         </div>
       ) : (
         !showForm && (
-          <div className="text-center py-8 text-white/35 text-sm">
+          <div className="text-center py-8 text-white/55 text-sm">
             아직 기록이 없습니다. 읽은 내용을 정리해보세요.
           </div>
         )

@@ -23,13 +23,13 @@ export default function TrendChart({ data, height = 120 }: Props) {
         <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
         <XAxis
           dataKey="label"
-          tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 10 }}
+          tick={{ fill: 'rgba(255,255,255,0.6)', fontSize: 10 }}
           axisLine={false}
           tickLine={false}
         />
         <YAxis
           domain={[0, 100]}
-          tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 10 }}
+          tick={{ fill: 'rgba(255,255,255,0.6)', fontSize: 10 }}
           axisLine={false}
           tickLine={false}
         />
@@ -38,7 +38,7 @@ export default function TrendChart({ data, height = 120 }: Props) {
             backgroundColor: 'rgba(30,35,48,0.95)',
             border: '1px solid rgba(52,211,153,0.12)',
             borderRadius: '8px',
-            color: '#d0cdc8',
+            color: '#fff',
             fontSize: '12px',
           }}
           formatter={(value: number | undefined) => [`${value ?? 0}%`, '달성률']}

@@ -107,12 +107,12 @@ export default function SleepTracker({ store, onSave }: Props) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-lg">😴</span>
-          <span className="text-xs text-white/50">오늘의 수면</span>
+          <span className="text-xs text-white/70">오늘의 수면</span>
         </div>
         {!editing && (todayRecord?.sleep?.wakeTime || todayRecord?.sleep?.sleepTime) && (
           <button
             onClick={() => setEditing(true)}
-            className="px-2 py-1 text-[10px] text-white/45 hover:text-white/70 hover:bg-white/[0.06] rounded-md transition-colors"
+            className="px-2 py-1 text-[10px] text-white/45 hover:text-white/90 hover:bg-white/[0.06] rounded-md transition-colors"
           >
             수정
           </button>
@@ -127,7 +127,7 @@ export default function SleepTracker({ store, onSave }: Props) {
               type="time"
               value={sleepTime}
               onChange={(e) => setSleepTime(e.target.value)}
-              className="w-full px-3 py-2 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg text-sm text-white/80 focus:outline-none focus:border-violet-500/50 [color-scheme:dark]"
+              className="w-full px-3 py-2 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg text-sm text-white focus:outline-none focus:border-violet-500/50 [color-scheme:dark]"
             />
           </div>
           <div className="flex-1 min-w-[100px]">
@@ -136,13 +136,13 @@ export default function SleepTracker({ store, onSave }: Props) {
               type="time"
               value={wakeTime}
               onChange={(e) => setWakeTime(e.target.value)}
-              className="w-full px-3 py-2 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg text-sm text-white/80 focus:outline-none focus:border-emerald-500/50 [color-scheme:dark]"
+              className="w-full px-3 py-2 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg text-sm text-white focus:outline-none focus:border-emerald-500/50 [color-scheme:dark]"
             />
           </div>
           <button
             onClick={handleSave}
             disabled={!wakeTime && !sleepTime}
-            className="px-4 py-2 text-xs font-medium bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/5 disabled:text-white/20 text-white rounded-lg transition-colors"
+            className="px-4 py-2 text-xs font-medium bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/5 disabled:text-white/40 text-white rounded-lg transition-colors"
           >
             저장
           </button>
@@ -152,25 +152,25 @@ export default function SleepTracker({ store, onSave }: Props) {
           {todayRecord?.sleep?.sleepTime && (
             <div className="flex items-center gap-1.5">
               <span className="text-violet-400/60 text-xs">취침</span>
-              <span className="text-white/70 font-medium">{formatTime(todayRecord.sleep.sleepTime)}</span>
+              <span className="text-white/90 font-medium">{formatTime(todayRecord.sleep.sleepTime)}</span>
             </div>
           )}
           {todayRecord?.sleep?.wakeTime && (
             <div className="flex items-center gap-1.5">
               <span className="text-amber-400/60 text-xs">기상</span>
-              <span className="text-white/70 font-medium">{formatTime(todayRecord.sleep.wakeTime)}</span>
+              <span className="text-white/90 font-medium">{formatTime(todayRecord.sleep.wakeTime)}</span>
             </div>
           )}
           {todayRecord?.sleep?.wakeTime && todayRecord?.sleep?.sleepTime && (
             <div className="flex items-center gap-1.5">
               <span className="text-emerald-400/60 text-xs">수면</span>
-              <span className="text-white/70 font-medium">
+              <span className="text-white/90 font-medium">
                 {calcSleepHours(todayRecord.sleep.sleepTime, todayRecord.sleep.wakeTime)}시간
               </span>
             </div>
           )}
           {!todayRecord?.sleep?.wakeTime && !todayRecord?.sleep?.sleepTime && (
-            <span className="text-white/35 text-xs">기록 없음</span>
+            <span className="text-white/55 text-xs">기록 없음</span>
           )}
         </div>
       )}
@@ -180,14 +180,14 @@ export default function SleepTracker({ store, onSave }: Props) {
         <div className="flex items-center justify-between mb-2">
           <span className="text-[10px] text-white/45 uppercase tracking-wider">최근 2주 수면 패턴</span>
           {avgHours !== null && (
-            <span className="text-[10px] text-white/30">평균 <span className="text-emerald-400/70 font-medium">{avgHours}시간</span></span>
+            <span className="text-[10px] text-white/50">평균 <span className="text-emerald-400/70 font-medium">{avgHours}시간</span></span>
           )}
         </div>
         <div className="relative flex">
           {/* Y axis labels */}
           <div className="flex flex-col justify-between pr-2 shrink-0" style={{ height: '140px' }}>
             {yLabels.map((l) => (
-              <span key={l.label} className="text-[9px] text-white/25 leading-none">{l.label}</span>
+              <span key={l.label} className="text-[9px] text-white/45 leading-none">{l.label}</span>
             ))}
           </div>
 
@@ -242,7 +242,7 @@ export default function SleepTracker({ store, onSave }: Props) {
             <div className="absolute -bottom-4 left-0 right-0 flex">
               {chartData.map((d, i) => (
                 <div key={i} className="flex-1 text-center">
-                  <span className={`text-[8px] ${d.isToday ? 'text-emerald-400 font-bold' : 'text-white/25'}`}>
+                  <span className={`text-[8px] ${d.isToday ? 'text-emerald-400 font-bold' : 'text-white/45'}`}>
                     {i % 2 === 0 ? d.date : ''}
                   </span>
                 </div>
@@ -252,7 +252,7 @@ export default function SleepTracker({ store, onSave }: Props) {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center justify-center gap-4 mt-6 text-[9px] text-white/40">
+        <div className="flex items-center justify-center gap-4 mt-6 text-[9px] text-white/60">
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full bg-violet-500/70" />
             <span>취침</span>

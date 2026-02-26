@@ -151,10 +151,10 @@ export default function Home() {
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 activeModule === item.key
                   ? 'bg-emerald-500/12 text-emerald-400 shadow-[inset_0_1px_0_rgba(52,211,153,0.08)]'
-                  : 'text-white/50 hover:text-white/75 hover:bg-white/[0.06]'
+                  : 'text-white/70 hover:text-white/75 hover:bg-white/[0.06]'
               }`}
             >
-              <span className={activeModule === item.key ? 'text-emerald-400' : 'text-white/40'}>{item.icon}</span>
+              <span className={activeModule === item.key ? 'text-emerald-400' : 'text-white/60'}>{item.icon}</span>
               {item.label}
             </button>
           ))}
@@ -179,7 +179,7 @@ export default function Home() {
               <h1 className="text-lg font-bold text-white/90 tracking-tight">
                 Ritual <span className="text-emerald-400">&</span> Routine
               </h1>
-              <button onClick={() => setSidebarOpen(false)} className="p-1 text-white/50 hover:text-white">
+              <button onClick={() => setSidebarOpen(false)} className="p-1 text-white/70 hover:text-white">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -196,10 +196,10 @@ export default function Home() {
                   className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all ${
                     activeModule === item.key
                       ? 'bg-emerald-500/12 text-emerald-400'
-                      : 'text-white/50 hover:text-white/75 hover:bg-white/[0.06]'
+                      : 'text-white/70 hover:text-white/75 hover:bg-white/[0.06]'
                   }`}
                 >
-                  <span className={activeModule === item.key ? 'text-emerald-400' : 'text-white/40'}>{item.icon}</span>
+                  <span className={activeModule === item.key ? 'text-emerald-400' : 'text-white/60'}>{item.icon}</span>
                   {item.label}
                 </button>
               ))}
@@ -215,7 +215,7 @@ export default function Home() {
           <div className="flex items-center gap-3 px-4 lg:px-10 h-14">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 -ml-2 text-white/60 hover:text-white transition-colors"
+              className="lg:hidden p-2 -ml-2 text-white/80 hover:text-white transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />

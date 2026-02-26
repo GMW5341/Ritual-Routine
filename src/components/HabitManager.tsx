@@ -49,7 +49,7 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
           onClick={() => setShowForm(!showForm)}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             showForm
-              ? 'bg-white/10 text-white/70'
+              ? 'bg-white/10 text-white/90'
               : 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30'
           }`}
         >
@@ -98,14 +98,14 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
                   className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${
                     frequency === f
                       ? 'bg-emerald-500 text-white'
-                      : 'bg-[#272c38] text-white/50 hover:text-white/70 hover:bg-[#313744]'
+                      : 'bg-[#272c38] text-white/70 hover:text-white/90 hover:bg-[#313744]'
                   }`}
                 >
                   {FREQ_LABELS[f]}
                 </button>
               ))}
             </div>
-            <p className="text-[10px] text-white/40 mt-1.5">
+            <p className="text-[10px] text-white/60 mt-1.5">
               {frequency === 'daily' && '매일 수행을 목표로 합니다.'}
               {frequency === 'weekly' && '일주일에 1회 이상 수행을 목표로 합니다.'}
               {frequency === 'monthly' && '한 달에 1회 이상 수행을 목표로 합니다.'}
@@ -114,7 +114,7 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
           <button
             type="submit"
             disabled={!name.trim()}
-            className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/10 disabled:text-white/30 text-white font-medium rounded-lg transition-colors"
+            className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/10 disabled:text-white/50 text-white font-medium rounded-lg transition-colors"
           >
             추가하기
           </button>
@@ -130,7 +130,7 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
           >
             <span className="text-xl">{habit.emoji}</span>
             <div className="flex-1 min-w-0">
-              <span className="text-white/80 text-sm">{habit.name}</span>
+              <span className="text-white text-sm">{habit.name}</span>
               {/* Frequency selector inline */}
               <div className="flex gap-1 mt-1">
                 {(Object.keys(FREQ_LABELS) as HabitFrequency[]).map((f) => (
@@ -140,7 +140,7 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
                     className={`px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
                       habit.frequency === f
                         ? FREQ_COLORS[f]
-                        : 'text-white/25 hover:text-white/40'
+                        : 'text-white/45 hover:text-white/60'
                     }`}
                   >
                     {FREQ_LABELS[f]}
@@ -161,7 +161,7 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
                 </button>
                 <button
                   onClick={() => setConfirmDelete(null)}
-                  className="px-3 py-1 text-xs bg-white/10 text-white/60 rounded-lg hover:bg-white/20"
+                  className="px-3 py-1 text-xs bg-white/10 text-white/80 rounded-lg hover:bg-white/20"
                 >
                   취소
                 </button>
@@ -169,7 +169,7 @@ export default function HabitManager({ store, onAdd, onRemove, onUpdateFrequency
             ) : (
               <button
                 onClick={() => setConfirmDelete(habit.id)}
-                className="p-1 text-white/30 hover:text-red-400 transition-colors shrink-0"
+                className="p-1 text-white/50 hover:text-red-400 transition-colors shrink-0"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

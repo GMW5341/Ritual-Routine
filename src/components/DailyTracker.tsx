@@ -24,7 +24,7 @@ export default function DailyTracker({ store, selectedDate, onDateChange, onTogg
       <div className="flex items-center justify-between">
         <button
           onClick={() => onDateChange(subDays(selectedDate, 1))}
-          className="p-2 rounded-lg hover:bg-white/10 transition-colors text-white/70 hover:text-white"
+          className="p-2 rounded-lg hover:bg-white/10 transition-colors text-white/90 hover:text-white"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -34,11 +34,11 @@ export default function DailyTracker({ store, selectedDate, onDateChange, onTogg
           <p className="text-2xl font-bold text-white">
             {format(selectedDate, 'M월 d일 EEEE', { locale: ko })}
           </p>
-          <p className="text-sm text-white/50 mt-1">{format(selectedDate, 'yyyy')}</p>
+          <p className="text-sm text-white/70 mt-1">{format(selectedDate, 'yyyy')}</p>
         </div>
         <button
           onClick={() => onDateChange(addDays(selectedDate, 1))}
-          className="p-2 rounded-lg hover:bg-white/10 transition-colors text-white/70 hover:text-white"
+          className="p-2 rounded-lg hover:bg-white/10 transition-colors text-white/90 hover:text-white"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -51,7 +51,7 @@ export default function DailyTracker({ store, selectedDate, onDateChange, onTogg
         <div className="flex justify-center">
           <button
             onClick={() => onDateChange(new Date())}
-            className="text-xs px-3 py-1 rounded-full bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors"
+            className="text-xs px-3 py-1 rounded-full bg-white/10 text-white/90 hover:bg-white/20 hover:text-white transition-colors"
           >
             오늘로 돌아가기
           </button>
@@ -76,7 +76,7 @@ export default function DailyTracker({ store, selectedDate, onDateChange, onTogg
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-2xl font-bold text-white">{rate}%</span>
-          <span className="text-xs text-white/50">달성률</span>
+          <span className="text-xs text-white/70">달성률</span>
         </div>
       </div>
 
@@ -95,7 +95,7 @@ export default function DailyTracker({ store, selectedDate, onDateChange, onTogg
               }`}
             >
               <span className="text-2xl">{habit.emoji}</span>
-              <span className={`flex-1 text-left font-medium ${done ? 'text-emerald-300' : 'text-white/80'}`}>
+              <span className={`flex-1 text-left font-medium ${done ? 'text-emerald-300' : 'text-white'}`}>
                 {habit.name}
               </span>
               <div

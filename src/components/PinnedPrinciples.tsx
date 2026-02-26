@@ -81,7 +81,7 @@ export default function PinnedPrinciples() {
                 <textarea
                   value={draft}
                   onChange={(e) => setDraft(e.target.value)}
-                  className="w-full bg-white/[0.06] border border-emerald-500/30 rounded-lg px-3 py-2.5 text-sm text-white/80 resize-none focus:outline-none focus:ring-1 focus:ring-emerald-500/30"
+                  className="w-full bg-white/[0.06] border border-emerald-500/30 rounded-lg px-3 py-2.5 text-sm text-white resize-none focus:outline-none focus:ring-1 focus:ring-emerald-500/30"
                   rows={2}
                   autoFocus
                   onKeyDown={(e) => {
@@ -93,7 +93,7 @@ export default function PinnedPrinciples() {
                   <button onClick={handleSaveEdit} className="px-2.5 py-1 text-[10px] font-medium bg-emerald-500/20 text-emerald-400 rounded-md hover:bg-emerald-500/30 transition-colors">
                     저장
                   </button>
-                  <button onClick={() => setEditingIdx(null)} className="px-2.5 py-1 text-[10px] text-white/40 rounded-md hover:bg-white/5 transition-colors">
+                  <button onClick={() => setEditingIdx(null)} className="px-2.5 py-1 text-[10px] text-white/60 rounded-md hover:bg-white/5 transition-colors">
                     취소
                   </button>
                 </div>
@@ -107,7 +107,7 @@ export default function PinnedPrinciples() {
                 <div className="absolute top-2.5 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-0.5">
                   <button
                     onClick={() => handleEdit(i)}
-                    className="p-1 text-white/30 hover:text-emerald-400 transition-colors"
+                    className="p-1 text-white/50 hover:text-emerald-400 transition-colors"
                   >
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -115,7 +115,7 @@ export default function PinnedPrinciples() {
                   </button>
                   <button
                     onClick={() => handleDelete(i)}
-                    className="p-1 text-white/30 hover:text-red-400 transition-colors"
+                    className="p-1 text-white/50 hover:text-red-400 transition-colors"
                   >
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -134,7 +134,7 @@ export default function PinnedPrinciples() {
             value={newDraft}
             onChange={(e) => setNewDraft(e.target.value)}
             placeholder="새로운 원칙을 적어주세요..."
-            className="w-full bg-[#272c38]/40 border border-emerald-500/15 rounded-lg px-3 py-2.5 text-sm text-white/80 placeholder-white/30 resize-none focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20"
+            className="w-full bg-[#272c38]/40 border border-emerald-500/15 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/50 resize-none focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20"
             rows={2}
             autoFocus
             onKeyDown={(e) => {
@@ -152,7 +152,7 @@ export default function PinnedPrinciples() {
             </button>
             <button
               onClick={() => { setAdding(false); setNewDraft(''); }}
-              className="px-2.5 py-1 text-[10px] text-white/40 rounded-md hover:bg-white/5 transition-colors"
+              className="px-2.5 py-1 text-[10px] text-white/60 rounded-md hover:bg-white/5 transition-colors"
             >
               취소
             </button>
@@ -161,7 +161,7 @@ export default function PinnedPrinciples() {
       ) : (
         <button
           onClick={() => setAdding(true)}
-          className="mt-3 w-full py-2.5 border border-dashed border-emerald-500/15 rounded-lg text-[11px] text-white/35 hover:text-emerald-400/60 hover:border-emerald-500/30 transition-all"
+          className="mt-3 w-full py-2.5 border border-dashed border-emerald-500/15 rounded-lg text-[11px] text-white/55 hover:text-emerald-400/60 hover:border-emerald-500/30 transition-all"
         >
           + 원칙 추가
         </button>
