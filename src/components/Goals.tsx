@@ -188,9 +188,9 @@ export default function Goals({ goalStore, onAdd, onUpdate, onRemove }: Props) {
                   onChange={(e) => setFormTerm(e.target.value as GoalTerm)}
                   className="w-full mt-1 bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-sm text-white/80 focus:outline-none focus:border-emerald-500/30"
                 >
-                  <option value="short" className="bg-[#1a1a1a]">단기 (~3개월)</option>
-                  <option value="mid" className="bg-[#1a1a1a]">중기 (3~12개월)</option>
-                  <option value="long" className="bg-[#1a1a1a]">장기 (1년+)</option>
+                  <option value="short" className="bg-[#1e2230]">단기 (~3개월)</option>
+                  <option value="mid" className="bg-[#1e2230]">중기 (3~12개월)</option>
+                  <option value="long" className="bg-[#1e2230]">장기 (1년+)</option>
                 </select>
               </div>
               <div className="flex-1">

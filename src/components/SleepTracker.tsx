@@ -231,7 +231,7 @@ export default function SleepTracker({ store, onSave }: Props) {
                     />
                   )}
                   {/* Tooltip */}
-                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black/90 rounded text-[9px] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-[#11151d]/95 border border-white/5 rounded text-[9px] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
                     {d.date} {d.hours !== null ? `${d.hours}h` : ''}
                   </div>
                 </div>

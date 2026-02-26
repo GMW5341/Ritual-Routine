@@ -204,7 +204,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
       </div>
 
       {/* Divider */}
-      <div className="border-t border-white/5" />
+      <div className="h-px bg-gradient-to-r from-transparent via-[#C4A265]/10 to-transparent" />
 
       {/* Board Controls */}
       <div className="flex items-center justify-between">
@@ -246,7 +246,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
         <table className="w-full border-collapse min-w-max">
           <thead>
             <tr>
-              <th className="sticky left-0 z-10 bg-[#0a0a0a] text-left text-xs text-white/40 font-medium py-2 pr-3 min-w-[120px]">
+              <th className="sticky left-0 z-10 bg-[#161a22] text-left text-xs text-white/40 font-medium py-2 pr-3 min-w-[120px]">
                 습관
               </th>
               {days.map((d) => {
@@ -286,7 +286,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
               const rateInfo = habitRates.find((r) => r.habitId === habit.id);
               return (
                 <tr key={habit.id} className="group hover:bg-white/[0.02]">
-                  <td className="sticky left-0 z-10 bg-[#0a0a0a] group-hover:bg-[#0d0d0d] py-1.5 pr-3 transition-colors">
+                  <td className="sticky left-0 z-10 bg-[#161a22] group-hover:bg-[#1a1e28] py-1.5 pr-3 transition-colors">
                     <div className="flex items-center gap-2">
                       <span className="text-sm">{habit.emoji}</span>
                       <span className="text-xs text-white/70 truncate max-w-[80px]">{habit.name}</span>
@@ -342,7 +342,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
           </tbody>
           <tfoot>
             <tr className="border-t border-white/5">
-              <td className="sticky left-0 z-10 bg-[#0a0a0a] py-2 pr-3">
+              <td className="sticky left-0 z-10 bg-[#161a22] py-2 pr-3">
                 <span className="text-[10px] text-white/30 font-medium">일일 달성률</span>
               </td>
               {dayRates.map((rate, i) => (
@@ -361,13 +361,13 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
       </div>
 
       {/* Divider */}
-      <div className="border-t border-white/5" />
+      <div className="h-px bg-gradient-to-r from-transparent via-[#C4A265]/10 to-transparent" />
 
       {/* Sleep Tracker */}
       <SleepTracker store={store} onSave={onSaveSleep} />
 
       {/* Divider */}
-      <div className="border-t border-white/5" />
+      <div className="h-px bg-gradient-to-r from-transparent via-[#C4A265]/10 to-transparent" />
 
       {/* Weekly/Monthly Memo Overview */}
       {(() => {
@@ -427,7 +427,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
       })()}
 
       {/* Divider */}
-      <div className="border-t border-white/5" />
+      <div className="h-px bg-gradient-to-r from-transparent via-[#C4A265]/10 to-transparent" />
 
       {/* Daily Memo - Selected Date */}
       <DailyMemo
