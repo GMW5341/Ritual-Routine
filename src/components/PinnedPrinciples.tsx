@@ -70,7 +70,7 @@ export default function PinnedPrinciples() {
           </svg>
           <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
         </div>
-        <span className="text-xs font-bold text-white/55 uppercase tracking-[0.15em]">MY PRINCIPLES</span>
+        <span className="text-xs font-bold text-white uppercase tracking-[0.15em]">MY PRINCIPLES</span>
       </div>
 
       <div className="space-y-2.5">
