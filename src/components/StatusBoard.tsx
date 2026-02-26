@@ -127,7 +127,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-center lg:items-start">
         {/* Gauge */}
         <div className="flex flex-col items-center gap-4 shrink-0">
-          <p className="text-sm font-medium text-white/60">
+          <p className="text-sm font-medium text-white/70">
             {format(today, 'M월 d일 EEEE', { locale: ko })}
           </p>
           <div className="relative w-36 h-36">
@@ -142,7 +142,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span className="text-3xl font-bold text-white">{todayRate}</span>
-              <span className="text-[10px] text-white/35">% ({todayCompleted}/{dailyHabits.length})</span>
+              <span className="text-[10px] text-white/45">% ({todayCompleted}/{dailyHabits.length})</span>
             </div>
           </div>
           {/* Mini week bars */}
@@ -167,7 +167,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
 
         {/* Habit icon grid */}
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] text-white/30 uppercase tracking-wider mb-2">오늘의 수행</p>
+          <p className="text-[10px] text-white/45 uppercase tracking-wider mb-2">오늘의 수행</p>
           <div className="grid grid-cols-5 sm:grid-cols-5 lg:grid-cols-5 gap-2">
             {store.habits.map((habit) => {
               const done = todayRecord?.completions[habit.id] === true;
@@ -178,12 +178,12 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                     onClick={() => onToggle(todayStr, habit.id)}
                     className={`w-full flex flex-col items-center gap-1 p-2.5 rounded-xl transition-all ${
                       done
-                        ? 'bg-emerald-500/15 ring-1 ring-emerald-500/20'
-                        : 'bg-white/[0.02] opacity-40 hover:opacity-70 hover:bg-white/[0.05]'
+                        ? 'bg-emerald-500/15 ring-1 ring-emerald-500/25'
+                        : 'bg-[#272c38]/60 opacity-50 hover:opacity-80 hover:bg-[#272c38]'
                     }`}
                   >
                     <span className="text-xl">{habit.emoji}</span>
-                    <span className={`text-[9px] truncate w-full text-center ${done ? 'text-emerald-300/70' : 'text-white/40'}`}>
+                    <span className={`text-[9px] truncate w-full text-center ${done ? 'text-emerald-300/80' : 'text-white/50'}`}>
                       {habit.name}
                     </span>
                   </button>
@@ -204,15 +204,15 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
       </div>
 
       {/* Divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-[#C4A265]/10 to-transparent" />
+      <div className="h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent" />
 
       {/* Board Controls */}
       <div className="flex items-center justify-between">
-        <div className="flex gap-1 bg-white/5 p-0.5 rounded-lg">
+        <div className="flex gap-1 bg-[#272c38]/60 p-0.5 rounded-lg">
           <button
             onClick={() => setMode('week')}
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-              mode === 'week' ? 'bg-emerald-500 text-white' : 'text-white/50 hover:text-white/80'
+              mode === 'week' ? 'bg-emerald-500 text-white' : 'text-white/55 hover:text-white/80'
             }`}
           >
             주간
@@ -220,20 +220,20 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
           <button
             onClick={() => setMode('month')}
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-              mode === 'month' ? 'bg-emerald-500 text-white' : 'text-white/50 hover:text-white/80'
+              mode === 'month' ? 'bg-emerald-500 text-white' : 'text-white/55 hover:text-white/80'
             }`}
           >
             월간
           </button>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="p-1 text-white/50 hover:text-white transition-colors">
+          <button onClick={() => navigate(-1)} className="p-1 text-white/55 hover:text-white transition-colors">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <span className="text-sm text-white/70 font-medium min-w-[120px] text-center">{headerLabel}</span>
-          <button onClick={() => navigate(1)} className="p-1 text-white/50 hover:text-white transition-colors">
+          <span className="text-sm text-white/75 font-medium min-w-[120px] text-center">{headerLabel}</span>
+          <button onClick={() => navigate(1)} className="p-1 text-white/55 hover:text-white transition-colors">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -246,7 +246,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
         <table className="w-full border-collapse min-w-max">
           <thead>
             <tr>
-              <th className="sticky left-0 z-10 bg-[#161a22] text-left text-xs text-white/40 font-medium py-2 pr-3 min-w-[120px]">
+              <th className="sticky left-0 z-10 bg-[#1e2330] text-left text-xs text-white/50 font-medium py-2 pr-3 min-w-[120px]">
                 습관
               </th>
               {days.map((d) => {
@@ -260,11 +260,11 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                   <th
                     key={ds}
                     className={`text-center text-[10px] font-medium py-2 px-0.5 min-w-[32px] cursor-pointer transition-colors ${
-                      isSelected ? 'text-emerald-400' : isToday ? 'text-emerald-400' : isSun ? 'text-red-400/60' : isSat ? 'text-blue-400/60' : 'text-white/30'
+                      isSelected ? 'text-emerald-400' : isToday ? 'text-emerald-400' : isSun ? 'text-red-400/70' : isSat ? 'text-blue-400/70' : 'text-white/40'
                     }`}
                     onClick={() => setSelectedMemoDate(ds)}
                   >
-                    <div>{format(d, 'E', { locale: ko })}</div>
+                    <div className="font-medium">{format(d, 'E', { locale: ko })}</div>
                     <div className={`text-xs mt-0.5 ${isToday ? 'bg-emerald-500 text-white rounded-full w-5 h-5 flex items-center justify-center mx-auto' : isSelected ? 'bg-emerald-500/20 text-emerald-400 rounded-full w-5 h-5 flex items-center justify-center mx-auto' : ''}`}>
                       {format(d, 'd')}
                     </div>
@@ -276,7 +276,7 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                   </th>
                 );
               })}
-              <th className="text-center text-[10px] text-white/40 font-medium py-2 px-2 min-w-[40px]">
+              <th className="text-center text-[10px] text-white/50 font-medium py-2 px-2 min-w-[40px]">
                 달성률
               </th>
             </tr>
@@ -286,10 +286,10 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
               const rateInfo = habitRates.find((r) => r.habitId === habit.id);
               return (
                 <tr key={habit.id} className="group hover:bg-white/[0.02]">
-                  <td className="sticky left-0 z-10 bg-[#161a22] group-hover:bg-[#1a1e28] py-1.5 pr-3 transition-colors">
+                  <td className="sticky left-0 z-10 bg-[#1e2330] group-hover:bg-[#232838] py-1.5 pr-3 transition-colors">
                     <div className="flex items-center gap-2">
                       <span className="text-sm">{habit.emoji}</span>
-                      <span className="text-xs text-white/70 truncate max-w-[80px]">{habit.name}</span>
+                      <span className="text-xs text-white/75 truncate max-w-[80px]">{habit.name}</span>
                       {habit.frequency !== 'daily' && (
                         <span className={`text-[8px] px-1 py-0.5 rounded ${
                           habit.frequency === 'weekly' ? 'text-blue-400/60 bg-blue-500/10' : 'text-violet-400/60 bg-violet-500/10'
@@ -312,8 +312,8 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                             done
                               ? 'bg-emerald-500/30 text-emerald-400'
                               : isTodayCell
-                              ? 'bg-white/[0.08] hover:bg-white/15 text-white/20'
-                              : 'bg-white/[0.03] hover:bg-white/[0.08] text-white/10'
+                              ? 'bg-[#272c38] hover:bg-[#313744] text-white/25'
+                              : 'bg-[#272c38]/40 hover:bg-[#272c38] text-white/15'
                           }`}
                         >
                           {done ? (
@@ -342,8 +342,8 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
           </tbody>
           <tfoot>
             <tr className="border-t border-white/5">
-              <td className="sticky left-0 z-10 bg-[#161a22] py-2 pr-3">
-                <span className="text-[10px] text-white/30 font-medium">일일 달성률</span>
+              <td className="sticky left-0 z-10 bg-[#1e2330] py-2 pr-3">
+                <span className="text-[10px] text-white/45 font-medium">일일 달성률</span>
               </td>
               {dayRates.map((rate, i) => (
                 <td key={i} className="text-center py-2 px-0.5">
@@ -361,13 +361,13 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
       </div>
 
       {/* Divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-[#C4A265]/10 to-transparent" />
+      <div className="h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent" />
 
       {/* Sleep Tracker */}
       <SleepTracker store={store} onSave={onSaveSleep} />
 
       {/* Divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-[#C4A265]/10 to-transparent" />
+      <div className="h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent" />
 
       {/* Weekly/Monthly Memo Overview */}
       {(() => {
@@ -382,10 +382,10 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
         return (
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
-              <span className="text-xs text-white/40">
+              <span className="text-xs text-white/50">
                 {mode === 'week' ? '주간' : '월간'} 메모 ({memoDays.length})
               </span>
             </div>
@@ -401,18 +401,18 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                       className={`w-full text-left rounded-lg p-3 transition-all ${
                         isSelected
                           ? 'bg-emerald-500/10 border border-emerald-500/20'
-                          : 'bg-white/[0.02] border border-white/5 hover:bg-white/[0.04]'
+                          : 'bg-[#272c38]/40 border border-[#313744]/50 hover:bg-[#272c38]/70'
                       }`}
                     >
                       <div className="flex items-center gap-2 mb-1">
-                        <span className={`text-[10px] font-medium ${isSelected ? 'text-emerald-400' : 'text-white/40'}`}>
+                        <span className={`text-[10px] font-medium ${isSelected ? 'text-emerald-400' : 'text-white/50'}`}>
                           {format(day, 'M/d (E)', { locale: ko })}
                         </span>
                         {date === todayStr && (
                           <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">오늘</span>
                         )}
                       </div>
-                      <p className={`text-xs leading-relaxed line-clamp-2 ${isSelected ? 'text-white/70' : 'text-white/40'}`}>
+                      <p className={`text-xs leading-relaxed line-clamp-2 ${isSelected ? 'text-white/75' : 'text-white/50'}`}>
                         {memo}
                       </p>
                     </button>
@@ -420,14 +420,14 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                 })}
               </div>
             ) : (
-              <p className="text-xs text-white/20 py-2">이 기간에 작성된 메모가 없습니다.</p>
+              <p className="text-xs text-white/35 py-2">이 기간에 작성된 메모가 없습니다.</p>
             )}
           </div>
         );
       })()}
 
       {/* Divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-[#C4A265]/10 to-transparent" />
+      <div className="h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent" />
 
       {/* Daily Memo - Selected Date */}
       <DailyMemo

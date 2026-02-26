@@ -34,25 +34,25 @@ export default function WeeklyHeatmap({ store }: Props) {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider">최근 4주 히트맵</h3>
+      <h3 className="text-sm font-semibold text-white/70 uppercase tracking-wider">최근 4주 히트맵</h3>
       <div className="grid grid-cols-7 gap-1.5">
         {['월', '화', '수', '목', '금', '토', '일'].map((d) => (
-          <div key={d} className="text-center text-xs text-white/30 pb-1">{d}</div>
+          <div key={d} className="text-center text-xs text-white/45 pb-1">{d}</div>
         ))}
         {days.map((d) => (
           <div
             key={d.dateStr}
             className={`aspect-square rounded-md ${getColor(d.rate)} flex items-center justify-center relative group cursor-default`}
           >
-            <span className="text-xs text-white/50">{d.dayNum}</span>
+            <span className="text-xs text-white/55">{d.dayNum}</span>
             {/* Tooltip */}
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#11151d]/95 border border-white/5 rounded text-xs text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#1e2330]/95 border border-[#313744]/60 rounded text-xs text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
               {format(d.date, 'M/d')} - {d.rate}%
             </div>
           </div>
         ))}
       </div>
-      <div className="flex items-center justify-end gap-2 text-xs text-white/30">
+      <div className="flex items-center justify-end gap-2 text-xs text-white/45">
         <span>0%</span>
         <div className="flex gap-0.5">
           <div className="w-3 h-3 rounded-sm bg-white/5" />

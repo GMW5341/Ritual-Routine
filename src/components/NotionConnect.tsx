@@ -92,13 +92,13 @@ export default function NotionConnect({ readingStore, onSetNotion, onDisconnect 
   };
 
   return (
-    <div className="bg-white/[0.02] border border-white/5 rounded-xl p-4 space-y-3">
+    <div className="bg-[#272c38]/30 border border-[#313744]/40 rounded-xl p-4 space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <svg className="w-4 h-4 text-white/30" viewBox="0 0 24 24" fill="currentColor">
+          <svg className="w-4 h-4 text-white/45" viewBox="0 0 24 24" fill="currentColor">
             <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L18.56 2.35c-.42-.326-.98-.7-2.055-.607L3.62 2.931c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.886l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952l1.449.327s0 .84-1.168.84l-3.222.186c-.094-.186 0-.653.327-.746l.84-.233V8.755l-1.168-.093c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.886.747-.933z"/>
           </svg>
-          <span className="text-xs text-white/50 font-medium">Notion 연동</span>
+          <span className="text-xs text-white/55 font-medium">Notion 연동</span>
           {isConnected && (
             <span className="text-[9px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded-full">연결됨</span>
           )}
@@ -122,7 +122,7 @@ export default function NotionConnect({ readingStore, onSetNotion, onDisconnect 
         ) : !showConfig ? (
           <button
             onClick={() => setShowConfig(true)}
-            className="px-3 py-1 text-[10px] font-medium text-white/40 hover:text-white/70 border border-white/10 hover:border-white/20 rounded-md transition-colors"
+            className="px-3 py-1 text-[10px] font-medium text-white/45 hover:text-white/70 border border-[#313744]/60 hover:border-emerald-500/20 rounded-md transition-colors"
           >
             연결하기
           </button>
@@ -138,7 +138,7 @@ export default function NotionConnect({ readingStore, onSetNotion, onDisconnect 
 
       {/* Last sync info */}
       {isConnected && notion?.lastSyncAt && !showConfig && (
-        <p className="text-[10px] text-white/20">
+        <p className="text-[10px] text-white/35">
           마지막 동기화: {new Date(notion.lastSyncAt).toLocaleString('ko-KR')}
         </p>
       )}
@@ -146,31 +146,31 @@ export default function NotionConnect({ readingStore, onSetNotion, onDisconnect 
       {/* Config form */}
       {showConfig && (
         <div className="space-y-3 pt-1">
-          <p className="text-[11px] text-white/30 leading-relaxed">
+          <p className="text-[11px] text-white/45 leading-relaxed">
             Notion Integration Token과 Database ID를 입력하세요.
             <br />
-            <span className="text-white/20">노션 설정 &gt; 연결 &gt; 내부 통합에서 토큰을 발급받을 수 있습니다.</span>
+            <span className="text-white/35">노션 설정 &gt; 연결 &gt; 내부 통합에서 토큰을 발급받을 수 있습니다.</span>
           </p>
 
           <div>
-            <label className="text-[10px] text-white/40 uppercase tracking-wider">Integration Token</label>
+            <label className="text-[10px] text-white/50 uppercase tracking-wider">Integration Token</label>
             <input
               type="password"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               placeholder="ntn_..."
-              className="w-full mt-1 bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-xs text-white/80 placeholder-white/20 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 font-mono"
+              className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-xs text-white/80 placeholder-white/30 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 font-mono"
             />
           </div>
 
           <div>
-            <label className="text-[10px] text-white/40 uppercase tracking-wider">Database ID</label>
+            <label className="text-[10px] text-white/50 uppercase tracking-wider">Database ID</label>
             <input
               type="text"
               value={databaseId}
               onChange={(e) => setDatabaseId(e.target.value)}
               placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-              className="w-full mt-1 bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-xs text-white/80 placeholder-white/20 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 font-mono"
+              className="w-full mt-1 bg-[#272c38]/40 border border-[#313744]/60 rounded-lg px-3 py-2 text-xs text-white/80 placeholder-white/30 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30 font-mono"
             />
           </div>
 
