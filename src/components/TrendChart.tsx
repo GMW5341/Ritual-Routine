@@ -35,10 +35,10 @@ export default function TrendChart({ data, height = 120 }: Props) {
         />
         <Tooltip
           contentStyle={{
-            backgroundColor: 'rgba(0,0,0,0.8)',
-            border: '1px solid rgba(255,255,255,0.1)',
+            backgroundColor: 'rgba(17,21,29,0.95)',
+            border: '1px solid rgba(196,162,101,0.1)',
             borderRadius: '8px',
-            color: '#fff',
+            color: '#e8e6e3',
             fontSize: '12px',
           }}
           formatter={(value: number | undefined) => [`${value ?? 0}%`, '달성률']}

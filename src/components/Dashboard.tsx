@@ -50,8 +50,8 @@ export default function Dashboard({ store, period, onPeriodChange }: Props) {
   return (
     <div className="space-y-10">
       {/* Philosophy banner - subtle, integrated */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-950/40 via-[#0a0a0a] to-emerald-950/40 border border-emerald-500/10 px-6 py-5">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(52,211,153,0.05),transparent_70%)]" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-950/40 via-[#161a22] to-[#C4A265]/[0.05] border border-[#C4A265]/10 px-6 py-5">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(52,211,153,0.05),transparent_70%)] bg-[radial-gradient(ellipse_at_bottom_left,rgba(196,162,101,0.03),transparent_70%)]" />
         <div className="relative flex items-center justify-between gap-6 flex-wrap">
           <div className="flex items-center gap-4 text-white/40 text-sm">
             <span>체력은 정신력</span>
@@ -89,15 +89,15 @@ export default function Dashboard({ store, period, onPeriodChange }: Props) {
 
       {/* Overview Cards */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 border border-emerald-500/20 rounded-xl p-4 text-center">
+        <div className="bg-gradient-to-br from-emerald-500/15 to-emerald-900/10 border border-emerald-500/15 rounded-xl p-4 text-center shadow-[inset_0_1px_0_rgba(196,162,101,0.05)]">
           <p className="text-3xl font-bold text-emerald-300">{overallRate}%</p>
           <p className="text-xs text-white/50 mt-1">전체 달성률</p>
         </div>
-        <div className="bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20 rounded-xl p-4 text-center">
-          <p className="text-3xl font-bold text-amber-300">{store.habits.length}</p>
+        <div className="bg-gradient-to-br from-[#C4A265]/15 to-[#7A6240]/10 border border-[#C4A265]/15 rounded-xl p-4 text-center shadow-[inset_0_1px_0_rgba(196,162,101,0.08)]">
+          <p className="text-3xl font-bold text-[#C4A265]">{store.habits.length}</p>
           <p className="text-xs text-white/50 mt-1">추적 습관</p>
         </div>
-        <div className="bg-gradient-to-br from-violet-500/20 to-violet-600/10 border border-violet-500/20 rounded-xl p-4 text-center">
+        <div className="bg-gradient-to-br from-violet-500/15 to-violet-900/10 border border-violet-500/15 rounded-xl p-4 text-center shadow-[inset_0_1px_0_rgba(196,162,101,0.05)]">
           <p className="text-3xl font-bold text-violet-300">{streaks[0]?.streak || 0}</p>
           <p className="text-xs text-white/50 mt-1">최대 연속</p>
         </div>

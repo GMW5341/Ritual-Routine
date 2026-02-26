@@ -46,7 +46,7 @@ export default function WeeklyHeatmap({ store }: Props) {
           >
             <span className="text-xs text-white/50">{d.dayNum}</span>
             {/* Tooltip */}
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black/90 rounded text-xs text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#11151d]/95 border border-white/5 rounded text-xs text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
               {format(d.date, 'M/d')} - {d.rate}%
             </div>
           </div>

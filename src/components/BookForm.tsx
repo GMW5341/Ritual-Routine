@@ -87,7 +87,7 @@ export default function BookForm({ onAdd, onClose }: Props) {
               className="w-full mt-1 bg-white/[0.03] border border-white/10 rounded-lg px-3 py-2 text-sm text-white/80 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/30"
             >
               {STATUS_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value} className="bg-[#1a1a1a]">
+                <option key={opt.value} value={opt.value} className="bg-[#1e2230]">
                   {opt.label}
                 </option>
               ))}

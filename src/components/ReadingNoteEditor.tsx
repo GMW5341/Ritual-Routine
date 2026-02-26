@@ -122,7 +122,7 @@ export default function ReadingNoteEditor({
               className="text-[10px] bg-white/[0.05] border border-white/10 rounded-md px-2 py-1 text-white/60 focus:outline-none focus:border-emerald-500/30"
             >
               {Object.entries(STATUS_LABELS).map(([val, label]) => (
-                <option key={val} value={val} className="bg-[#1a1a1a]">{label}</option>
+                <option key={val} value={val} className="bg-[#1e2230]">{label}</option>
               ))}
             </select>
 
