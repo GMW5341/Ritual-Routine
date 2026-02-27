@@ -5,24 +5,20 @@ import { format, subDays, startOfMonth, endOfMonth, eachDayOfInterval, startOfWe
 import { ko } from 'date-fns/locale';
 import { HabitStore, SleepRecord } from '@/lib/types';
 import { getOverallDailyRate } from '@/lib/stats';
-import DailyMemo from './DailyMemo';
 import SleepTracker from './SleepTracker';
 
 interface Props {
   store: HabitStore;
   onToggle: (date: string, habitId: string) => void;
-  onSaveMemo: (date: string, memo: string) => void;
-  onDeleteMemo: (date: string) => void;
   onSaveSleep: (date: string, sleep: SleepRecord) => void;
   onNavigateToReading?: () => void;
 }
 
 type BoardMode = 'week' | 'month';
 
-export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo, onSaveSleep, onNavigateToReading }: Props) {
+export default function StatusBoard({ store, onToggle, onSaveSleep, onNavigateToReading }: Props) {
   const [mode, setMode] = useState<BoardMode>('week');
   const [baseDate, setBaseDate] = useState(new Date());
-  const [selectedMemoDate, setSelectedMemoDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'));
 
   const today = new Date();
   const todayStr = format(today, 'yyyy-MM-dd');
@@ -254,25 +250,17 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
                 const isToday = ds === todayStr;
                 const isSun = d.getDay() === 0;
                 const isSat = d.getDay() === 6;
-                const hasMemo = !!store.records.find((r) => r.date === ds)?.memo;
-                const isSelected = ds === selectedMemoDate;
                 return (
                   <th
                     key={ds}
-                    className={`text-center text-[10px] font-medium py-2 px-0.5 min-w-[32px] cursor-pointer transition-colors ${
-                      isSelected ? 'text-emerald-400' : isToday ? 'text-emerald-400' : isSun ? 'text-red-400/70' : isSat ? 'text-blue-400/70' : 'text-white/60'
+                    className={`text-center text-[10px] font-medium py-2 px-0.5 min-w-[32px] transition-colors ${
+                      isToday ? 'text-emerald-400' : isSun ? 'text-red-400/70' : isSat ? 'text-blue-400/70' : 'text-white/60'
                     }`}
-                    onClick={() => setSelectedMemoDate(ds)}
                   >
                     <div className="font-medium">{format(d, 'E', { locale: ko })}</div>
-                    <div className={`text-xs mt-0.5 ${isToday ? 'bg-emerald-500 text-white rounded-full w-5 h-5 flex items-center justify-center mx-auto' : isSelected ? 'bg-emerald-500/20 text-emerald-400 rounded-full w-5 h-5 flex items-center justify-center mx-auto' : ''}`}>
+                    <div className={`text-xs mt-0.5 ${isToday ? 'bg-emerald-500 text-white rounded-full w-5 h-5 flex items-center justify-center mx-auto' : ''}`}>
                       {format(d, 'd')}
                     </div>
-                    {hasMemo && (
-                      <div className="flex justify-center mt-1">
-                        <div className={`w-1 h-1 rounded-full ${isSelected ? 'bg-emerald-400' : 'bg-amber-400/60'}`} />
-                      </div>
-                    )}
                   </th>
                 );
               })}
@@ -366,76 +354,6 @@ export default function StatusBoard({ store, onToggle, onSaveMemo, onDeleteMemo,
       {/* Sleep Tracker */}
       <SleepTracker store={store} onSave={onSaveSleep} />
 
-      {/* Divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent" />
-
-      {/* Weekly/Monthly Memo Overview */}
-      {(() => {
-        const memoDays = days
-          .map((d) => {
-            const ds = format(d, 'yyyy-MM-dd');
-            const rec = store.records.find((r) => r.date === ds);
-            return rec?.memo ? { date: ds, day: d, memo: rec.memo } : null;
-          })
-          .filter(Boolean) as { date: string; day: Date; memo: string }[];
-
-        return (
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-              </svg>
-              <span className="text-xs text-white/70">
-                {mode === 'week' ? '주간' : '월간'} 메모 ({memoDays.length})
-              </span>
-            </div>
-
-            {memoDays.length > 0 ? (
-              <div className="space-y-2">
-                {memoDays.map(({ date, day, memo }) => {
-                  const isSelected = date === selectedMemoDate;
-                  return (
-                    <button
-                      key={date}
-                      onClick={() => setSelectedMemoDate(date)}
-                      className={`w-full text-left rounded-lg p-3 transition-all ${
-                        isSelected
-                          ? 'bg-emerald-500/10 border border-emerald-500/20'
-                          : 'bg-[#272c38]/40 border border-[#313744]/50 hover:bg-[#272c38]/70'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className={`text-[10px] font-medium ${isSelected ? 'text-emerald-400' : 'text-white/70'}`}>
-                          {format(day, 'M/d (E)', { locale: ko })}
-                        </span>
-                        {date === todayStr && (
-                          <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">오늘</span>
-                        )}
-                      </div>
-                      <p className={`text-xs leading-relaxed line-clamp-2 ${isSelected ? 'text-white/75' : 'text-white/70'}`}>
-                        {memo}
-                      </p>
-                    </button>
-                  );
-                })}
-              </div>
-            ) : (
-              <p className="text-xs text-white/55 py-2">이 기간에 작성된 메모가 없습니다.</p>
-            )}
-          </div>
-        );
-      })()}
-
-      {/* Divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent" />
-
-      {/* Daily Memo - Selected Date */}
-      <DailyMemo
-        store={store}
-        date={selectedMemoDate}
-        onSave={onSaveMemo}
-        onDelete={onDeleteMemo}
-      />
     </div>
   );
 }

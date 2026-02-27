@@ -9,10 +9,11 @@ import Dashboard from '@/components/Dashboard';
 import StatusBoard from '@/components/StatusBoard';
 import Settings from '@/components/Settings';
 import ReadingLog from '@/components/ReadingLog';
+import DailyRecord from '@/components/DailyRecord';
 import Goals from '@/components/Goals';
 import PinnedPrinciples from '@/components/PinnedPrinciples';
 
-type Module = 'board' | 'dashboard' | 'reading' | 'goals' | 'settings';
+type Module = 'board' | 'dashboard' | 'diary' | 'reading' | 'goals' | 'settings';
 
 const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
   {
@@ -32,6 +33,15 @@ const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3v18h18" />
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16l4-6 4 4 4-8" />
+      </svg>
+    ),
+  },
+  {
+    key: 'diary',
+    label: '일일 기록',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
       </svg>
     ),
   },
@@ -96,9 +106,11 @@ export default function Home() {
   const renderModule = () => {
     switch (activeModule) {
       case 'board':
-        return <StatusBoard store={store} onToggle={toggleHabit} onSaveMemo={setMemo} onDeleteMemo={deleteMemo} onSaveSleep={setSleep} onNavigateToReading={navigateToReading} />;
+        return <StatusBoard store={store} onToggle={toggleHabit} onSaveSleep={setSleep} onNavigateToReading={navigateToReading} />;
       case 'dashboard':
         return <Dashboard store={store} period={period} onPeriodChange={setPeriod} />;
+      case 'diary':
+        return <DailyRecord store={store} onSave={setMemo} onDelete={deleteMemo} />;
       case 'reading':
         return (
           <ReadingLog
