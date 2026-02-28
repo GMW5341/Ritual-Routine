@@ -76,7 +76,7 @@ const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
 ];
 
 export default function Home() {
-  const { store, addHabit, removeHabit, toggleHabit, setMemo, deleteMemo, setSleep, updateFrequency } = useHabitStore();
+  const { store, addHabit, removeHabit, toggleHabit, setMemo, deleteMemo, setSleep, updateFrequency, addQuickMemo, removeQuickMemo } = useHabitStore();
   const {
     store: readingStore,
     addBook, updateBook, removeBook,
@@ -106,7 +106,7 @@ export default function Home() {
   const renderModule = () => {
     switch (activeModule) {
       case 'board':
-        return <StatusBoard store={store} onToggle={toggleHabit} onSaveSleep={setSleep} onNavigateToReading={navigateToReading} />;
+        return <StatusBoard store={store} onToggle={toggleHabit} onSaveSleep={setSleep} onAddQuickMemo={addQuickMemo} onRemoveQuickMemo={removeQuickMemo} onNavigateToReading={navigateToReading} />;
       case 'dashboard':
         return <Dashboard store={store} period={period} onPeriodChange={setPeriod} />;
       case 'diary':

@@ -1,4 +1,4 @@
-import { HabitStore, Habit, DailyRecord, HabitFrequency, SleepRecord } from './types';
+import { HabitStore, Habit, DailyRecord, HabitFrequency, SleepRecord, QuickMemo } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
 const STORAGE_KEY = 'ritual-routine-store';
@@ -134,6 +134,29 @@ export function deleteMemo(store: HabitStore, date: string): HabitStore {
     ...store,
     records: store.records.map((r) =>
       r.date === date ? { ...r, memo: undefined } : r
+    ),
+  };
+}
+
+export function addQuickMemo(store: HabitStore, date: string, text: string): HabitStore {
+  const memo: QuickMemo = { id: uuidv4(), text, createdAt: new Date().toISOString() };
+  const existing = store.records.find((r) => r.date === date);
+  if (existing) {
+    return {
+      ...store,
+      records: store.records.map((r) =>
+        r.date === date ? { ...r, quickMemos: [...(r.quickMemos ?? []), memo] } : r
+      ),
+    };
+  }
+  return { ...store, records: [...store.records, { date, completions: {}, quickMemos: [memo] }] };
+}
+
+export function removeQuickMemo(store: HabitStore, date: string, memoId: string): HabitStore {
+  return {
+    ...store,
+    records: store.records.map((r) =>
+      r.date === date ? { ...r, quickMemos: (r.quickMemos ?? []).filter((m) => m.id !== memoId) } : r
     ),
   };
 }

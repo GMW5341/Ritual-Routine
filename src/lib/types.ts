@@ -13,11 +13,18 @@ export interface SleepRecord {
   sleepTime?: string; // HH:mm
 }
 
+export interface QuickMemo {
+  id: string;
+  text: string;
+  createdAt: string; // ISO timestamp
+}
+
 export interface DailyRecord {
   date: string; // YYYY-MM-DD
   completions: Record<string, boolean>; // habitId -> completed
   memo?: string;
   sleep?: SleepRecord;
+  quickMemos?: QuickMemo[];
 }
 
 export interface HabitStore {

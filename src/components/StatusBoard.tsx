@@ -6,17 +6,20 @@ import { ko } from 'date-fns/locale';
 import { HabitStore, SleepRecord } from '@/lib/types';
 import { getOverallDailyRate } from '@/lib/stats';
 import SleepTracker from './SleepTracker';
+import MemoWidget from './MemoWidget';
 
 interface Props {
   store: HabitStore;
   onToggle: (date: string, habitId: string) => void;
   onSaveSleep: (date: string, sleep: SleepRecord) => void;
+  onAddQuickMemo: (date: string, text: string) => void;
+  onRemoveQuickMemo: (date: string, memoId: string) => void;
   onNavigateToReading?: () => void;
 }
 
 type BoardMode = 'week' | 'month';
 
-export default function StatusBoard({ store, onToggle, onSaveSleep, onNavigateToReading }: Props) {
+export default function StatusBoard({ store, onToggle, onSaveSleep, onAddQuickMemo, onRemoveQuickMemo, onNavigateToReading }: Props) {
   const [mode, setMode] = useState<BoardMode>('week');
   const [baseDate, setBaseDate] = useState(new Date());
 
@@ -353,6 +356,12 @@ export default function StatusBoard({ store, onToggle, onSaveSleep, onNavigateTo
 
       {/* Sleep Tracker */}
       <SleepTracker store={store} onSave={onSaveSleep} />
+
+      {/* Divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent" />
+
+      {/* Memo Widget */}
+      <MemoWidget store={store} onAdd={onAddQuickMemo} onRemove={onRemoveQuickMemo} />
 
     </div>
   );
