@@ -12,6 +12,7 @@ import ReadingLog from '@/components/ReadingLog';
 import DailyRecord from '@/components/DailyRecord';
 import Goals from '@/components/Goals';
 import PinnedPrinciples from '@/components/PinnedPrinciples';
+import FloatingMemo from '@/components/FloatingMemo';
 
 type Module = 'board' | 'dashboard' | 'diary' | 'reading' | 'goals' | 'settings';
 
@@ -106,7 +107,7 @@ export default function Home() {
   const renderModule = () => {
     switch (activeModule) {
       case 'board':
-        return <StatusBoard store={store} onToggle={toggleHabit} onSaveSleep={setSleep} onAddQuickMemo={addQuickMemo} onRemoveQuickMemo={removeQuickMemo} onNavigateToReading={navigateToReading} />;
+        return <StatusBoard store={store} onToggle={toggleHabit} onSaveSleep={setSleep} onNavigateToReading={navigateToReading} />;
       case 'dashboard':
         return <Dashboard store={store} period={period} onPeriodChange={setPeriod} />;
       case 'diary':
@@ -253,6 +254,9 @@ export default function Home() {
           )}
         </div>
       </div>
+
+      {/* Global Floating Memo */}
+      <FloatingMemo store={store} onAdd={addQuickMemo} onRemove={removeQuickMemo} />
     </div>
   );
 }
