@@ -160,6 +160,7 @@ export default function FloatingMemo({ store, onAdd, onRemove }: Props) {
                 )}
               </div>
               <button
+                onPointerDown={(e) => e.stopPropagation()}
                 onClick={() => setIsOpen(false)}
                 className="p-1 text-white/40 hover:text-white/80 transition-colors"
               >
