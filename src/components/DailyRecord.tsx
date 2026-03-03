@@ -3,42 +3,52 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { format, subDays, addDays } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { HabitStore } from '@/lib/types';
+import { HabitStore, QuickMemo } from '@/lib/types';
 
 interface Props {
   store: HabitStore;
-  onSave: (date: string, memo: string) => void;
-  onDelete: (date: string) => void;
+  onAdd: (date: string, text: string) => void;
+  onUpdate: (date: string, memoId: string, text: string) => void;
+  onRemove: (date: string, memoId: string) => void;
 }
 
-export default function DailyRecord({ store, onSave, onDelete }: Props) {
+export default function DailyRecord({ store, onAdd, onUpdate, onRemove }: Props) {
   const todayStr = format(new Date(), 'yyyy-MM-dd');
   const [selectedDate, setSelectedDate] = useState(todayStr);
   const [draft, setDraft] = useState('');
-  const [editing, setEditing] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editDraft, setEditDraft] = useState('');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const editRef = useRef<HTMLTextAreaElement>(null);
 
   const record = store.records.find((r) => r.date === selectedDate);
-  const savedMemo = record?.memo ?? '';
-
-  const dailyHabits = store.habits.filter((h) => h.frequency === 'daily');
+  const memos: QuickMemo[] = useMemo(
+    () => (record?.quickMemos ?? []).slice().sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
+    [record?.quickMemos]
+  );
   const completedHabits = store.habits.filter((h) => record?.completions[h.id] === true);
 
-  // Sync draft when date changes
+  // Reset edit state on date change
   useEffect(() => {
-    setDraft(savedMemo);
-    setEditing(false);
-    setConfirmDelete(false);
-  }, [selectedDate, savedMemo]);
+    setEditingId(null);
+    setDeletingId(null);
+  }, [selectedDate]);
 
-  // Auto-resize textarea
+  // Auto-resize textareas
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
     }
-  }, [draft, editing]);
+  }, [draft]);
+
+  useEffect(() => {
+    if (editRef.current) {
+      editRef.current.style.height = 'auto';
+      editRef.current.style.height = editRef.current.scrollHeight + 'px';
+    }
+  }, [editDraft]);
 
   const navigateDate = (dir: -1 | 1) => {
     const d = new Date(selectedDate + 'T00:00:00');
@@ -46,25 +56,41 @@ export default function DailyRecord({ store, onSave, onDelete }: Props) {
     setSelectedDate(format(next, 'yyyy-MM-dd'));
   };
 
-  const handleSave = () => {
+  const handleAdd = () => {
     const trimmed = draft.trim();
-    if (trimmed) {
-      onSave(selectedDate, trimmed);
-    }
-    setEditing(false);
-  };
-
-  const handleDelete = () => {
-    onDelete(selectedDate);
+    if (!trimmed) return;
+    onAdd(selectedDate, trimmed);
     setDraft('');
-    setConfirmDelete(false);
-    setEditing(false);
   };
 
-  // Recent entries with memos
-  const recentEntries = useMemo(() => {
+  const startEdit = (memo: QuickMemo) => {
+    setEditingId(memo.id);
+    setEditDraft(memo.text);
+    setDeletingId(null);
+  };
+
+  const handleUpdate = (memoId: string) => {
+    const trimmed = editDraft.trim();
+    if (!trimmed) return;
+    onUpdate(selectedDate, memoId, trimmed);
+    setEditingId(null);
+    setEditDraft('');
+  };
+
+  const handleRemove = (memoId: string) => {
+    onRemove(selectedDate, memoId);
+    setDeletingId(null);
+  };
+
+  const formatTime = (iso: string) => {
+    const d = new Date(iso);
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  };
+
+  // Recent dates that have quickMemos
+  const recentDates = useMemo(() => {
     return store.records
-      .filter((r) => !!r.memo)
+      .filter((r) => (r.quickMemos?.length ?? 0) > 0)
       .sort((a, b) => b.date.localeCompare(a.date))
       .slice(0, 30);
   }, [store.records]);
@@ -150,115 +176,172 @@ export default function DailyRecord({ store, onSave, onDelete }: Props) {
         </div>
       )}
 
-      {/* Diary Writing Area */}
-      <div className="bg-[#272c38]/30 border border-[#313744]/40 rounded-xl p-5 space-y-4">
+      {/* New Entry Input */}
+      <div className="bg-[#272c38]/30 border border-[#313744]/40 rounded-xl p-5 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <svg className="w-4 h-4 text-emerald-400/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z" />
             </svg>
-            <span className="text-sm font-medium text-white/80">일일 기록</span>
+            <span className="text-sm font-medium text-white/80">기록 남기기</span>
           </div>
-          {savedMemo && !editing && (
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setEditing(true)}
-                className="px-2.5 py-1 text-xs text-white/45 hover:text-white/90 hover:bg-white/[0.06] rounded-md transition-colors"
-              >
-                수정
-              </button>
-              {confirmDelete ? (
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={handleDelete}
-                    className="px-2.5 py-1 text-xs text-red-400 hover:bg-red-500/10 rounded-md transition-colors"
-                  >
-                    확인
-                  </button>
-                  <button
-                    onClick={() => setConfirmDelete(false)}
-                    className="px-2.5 py-1 text-xs text-white/60 hover:bg-white/5 rounded-md transition-colors"
-                  >
-                    취소
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setConfirmDelete(true)}
-                  className="px-2.5 py-1 text-xs text-white/60 hover:text-red-400 hover:bg-white/5 rounded-md transition-colors"
-                >
-                  삭제
-                </button>
-              )}
-            </div>
-          )}
         </div>
+        <textarea
+          ref={textareaRef}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+              e.preventDefault();
+              handleAdd();
+            }
+          }}
+          placeholder="지금 이 순간의 생각을 기록하세요..."
+          rows={3}
+          className="w-full bg-[#1e2330]/60 border border-[#313744]/60 rounded-lg px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 resize-none leading-relaxed"
+        />
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] text-white/30">Ctrl+Enter로 저장</span>
+          <button
+            onClick={handleAdd}
+            disabled={!draft.trim()}
+            className="px-5 py-1.5 text-xs font-medium bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/5 disabled:text-white/40 text-white rounded-lg transition-colors"
+          >
+            기록
+          </button>
+        </div>
+      </div>
 
-        {editing || !savedMemo ? (
-          <div className="space-y-3">
-            <textarea
-              ref={textareaRef}
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Escape') {
-                  setDraft(savedMemo);
-                  setEditing(false);
-                }
-              }}
-              placeholder="오늘 하루를 기록해보세요. 느낀 점, 배운 것, 감사한 일..."
-              rows={6}
-              className="w-full bg-[#1e2330]/60 border border-[#313744]/60 rounded-lg px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 resize-none leading-relaxed"
-              autoFocus={editing}
-            />
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] text-white/30">Esc로 취소</span>
-              <div className="flex items-center gap-2">
-                {editing && (
-                  <button
-                    onClick={() => {
-                      setDraft(savedMemo);
-                      setEditing(false);
-                    }}
-                    className="px-3 py-1.5 text-xs text-white/60 hover:text-white/90 hover:bg-white/5 rounded-lg transition-colors"
-                  >
-                    취소
-                  </button>
-                )}
-                <button
-                  onClick={handleSave}
-                  disabled={!draft.trim() || draft.trim() === savedMemo}
-                  className="px-5 py-1.5 text-xs font-medium bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/5 disabled:text-white/40 text-white rounded-lg transition-colors"
-                >
-                  저장
-                </button>
-              </div>
+      {/* Timeline */}
+      {memos.length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-xs text-white/50 uppercase tracking-wider font-medium">
+            {format(dateObj, 'M월 d일', { locale: ko })}의 타임라인
+          </h3>
+          <div className="relative pl-7">
+            {/* Timeline line */}
+            <div className="absolute left-[7px] top-1 bottom-1 w-px bg-emerald-500/15" />
+
+            <div className="space-y-4">
+              {memos.map((memo) => (
+                <div key={memo.id} className="relative group">
+                  {/* Dot */}
+                  <div className="absolute -left-7 top-1 w-[15px] flex justify-center">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500/50 ring-2 ring-[#1e2330]" />
+                  </div>
+
+                  <div className="bg-[#272c38]/25 border border-[#313744]/30 rounded-lg p-3 hover:border-[#313744]/50 transition-colors">
+                    {/* Time + Actions */}
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-[11px] text-emerald-400/60 tabular-nums font-medium">
+                        {formatTime(memo.createdAt)}
+                      </span>
+                      {editingId !== memo.id && (
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={() => startEdit(memo)}
+                            className="text-[10px] text-white/40 hover:text-white/80 px-1.5 py-0.5 rounded transition-colors"
+                          >
+                            수정
+                          </button>
+                          {deletingId === memo.id ? (
+                            <>
+                              <button
+                                onClick={() => handleRemove(memo.id)}
+                                className="text-[10px] text-red-400 hover:bg-red-500/10 px-1.5 py-0.5 rounded transition-colors"
+                              >
+                                확인
+                              </button>
+                              <button
+                                onClick={() => setDeletingId(null)}
+                                className="text-[10px] text-white/50 hover:bg-white/5 px-1.5 py-0.5 rounded transition-colors"
+                              >
+                                취소
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={() => setDeletingId(memo.id)}
+                              className="text-[10px] text-white/40 hover:text-red-400 px-1.5 py-0.5 rounded transition-colors"
+                            >
+                              삭제
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Content */}
+                    {editingId === memo.id ? (
+                      <div className="space-y-2">
+                        <textarea
+                          ref={editRef}
+                          value={editDraft}
+                          onChange={(e) => setEditDraft(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                              e.preventDefault();
+                              handleUpdate(memo.id);
+                            }
+                            if (e.key === 'Escape') {
+                              setEditingId(null);
+                            }
+                          }}
+                          rows={2}
+                          className="w-full bg-[#1e2330]/60 border border-[#313744]/60 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 resize-none leading-relaxed"
+                          autoFocus
+                        />
+                        <div className="flex justify-end gap-2">
+                          <button
+                            onClick={() => setEditingId(null)}
+                            className="px-2.5 py-1 text-[10px] text-white/60 hover:text-white/90 hover:bg-white/5 rounded-md transition-colors"
+                          >
+                            취소
+                          </button>
+                          <button
+                            onClick={() => handleUpdate(memo.id)}
+                            disabled={!editDraft.trim() || editDraft.trim() === memo.text}
+                            className="px-3 py-1 text-[10px] font-medium bg-emerald-500 hover:bg-emerald-600 disabled:bg-white/5 disabled:text-white/40 text-white rounded-md transition-colors"
+                          >
+                            저장
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-white/70 leading-relaxed whitespace-pre-wrap">
+                        {memo.text}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        ) : (
-          <div
-            className="text-sm text-white/70 leading-relaxed whitespace-pre-wrap cursor-pointer hover:bg-white/[0.02] rounded-lg p-3 -m-3 transition-colors min-h-[80px]"
-            onClick={() => setEditing(true)}
-          >
-            {savedMemo}
-          </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {memos.length === 0 && (
+        <p className="text-center text-xs text-white/30 py-4">
+          이 날의 기록이 없습니다. 위에서 첫 기록을 남겨보세요.
+        </p>
+      )}
 
       {/* Divider */}
       <div className="h-px bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent" />
 
-      {/* Recent Entries */}
-      {recentEntries.length > 0 && (
+      {/* Recent Dates */}
+      {recentDates.length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-xs text-white/50 uppercase tracking-wider font-medium">최근 기록</h3>
+          <h3 className="text-xs text-white/50 uppercase tracking-wider font-medium">기록이 있는 날</h3>
           <div className="space-y-2">
-            {recentEntries.map((entry) => {
+            {recentDates.map((entry) => {
               const entryDate = new Date(entry.date + 'T00:00:00');
               const isSelected = entry.date === selectedDate;
-              const entryCompletedCount = store.habits.filter(
-                (h) => entry.completions[h.id] === true
-              ).length;
+              const count = entry.quickMemos?.length ?? 0;
+              const preview = entry.quickMemos
+                ?.slice()
+                .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0]?.text ?? '';
 
               return (
                 <button
@@ -275,18 +358,14 @@ export default function DailyRecord({ store, onSave, onDelete }: Props) {
                       {format(entryDate, 'M월 d일 (E)', { locale: ko })}
                     </span>
                     <div className="flex items-center gap-2">
-                      {entryCompletedCount > 0 && (
-                        <span className="text-[10px] text-white/40">
-                          {entryCompletedCount}/{store.habits.length}
-                        </span>
-                      )}
+                      <span className="text-[10px] text-white/40">{count}개</span>
                       {entry.date === todayStr && (
                         <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">오늘</span>
                       )}
                     </div>
                   </div>
-                  <p className={`text-xs leading-relaxed line-clamp-2 ${isSelected ? 'text-white/75' : 'text-white/55'}`}>
-                    {entry.memo}
+                  <p className={`text-xs leading-relaxed line-clamp-1 ${isSelected ? 'text-white/75' : 'text-white/55'}`}>
+                    {preview}
                   </p>
                 </button>
               );

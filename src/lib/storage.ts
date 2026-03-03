@@ -161,6 +161,17 @@ export function removeQuickMemo(store: HabitStore, date: string, memoId: string)
   };
 }
 
+export function updateQuickMemo(store: HabitStore, date: string, memoId: string, text: string): HabitStore {
+  return {
+    ...store,
+    records: store.records.map((r) =>
+      r.date === date
+        ? { ...r, quickMemos: (r.quickMemos ?? []).map((m) => m.id === memoId ? { ...m, text } : m) }
+        : r
+    ),
+  };
+}
+
 export function setSleep(store: HabitStore, date: string, sleep: SleepRecord): HabitStore {
   const existing = store.records.find((r) => r.date === date);
   const cleanSleep = (sleep.wakeTime || sleep.sleepTime) ? sleep : undefined;

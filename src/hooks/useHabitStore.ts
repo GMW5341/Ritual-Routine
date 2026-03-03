@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { HabitStore, HabitFrequency, SleepRecord } from '@/lib/types';
-import { loadStore, saveStore, addHabit, removeHabit, toggleHabit, setMemo, deleteMemo, setSleep, updateHabitFrequency, addQuickMemo, removeQuickMemo } from '@/lib/storage';
+import { loadStore, saveStore, addHabit, removeHabit, toggleHabit, setMemo, deleteMemo, setSleep, updateHabitFrequency, addQuickMemo, removeQuickMemo, updateQuickMemo } from '@/lib/storage';
 
 export function useHabitStore() {
   const [store, setStore] = useState<HabitStore | null>(null);
@@ -88,6 +88,14 @@ export function useHabitStore() {
     [store, update]
   );
 
+  const handleUpdateQuickMemo = useCallback(
+    (date: string, memoId: string, text: string) => {
+      if (!store) return;
+      update(updateQuickMemo(store, date, memoId, text));
+    },
+    [store, update]
+  );
+
   return {
     store,
     addHabit: handleAddHabit,
@@ -99,5 +107,6 @@ export function useHabitStore() {
     updateFrequency: handleUpdateFrequency,
     addQuickMemo: handleAddQuickMemo,
     removeQuickMemo: handleRemoveQuickMemo,
+    updateQuickMemo: handleUpdateQuickMemo,
   };
 }

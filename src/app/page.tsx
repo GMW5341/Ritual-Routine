@@ -77,7 +77,7 @@ const NAV_ITEMS: { key: Module; label: string; icon: React.ReactNode }[] = [
 ];
 
 export default function Home() {
-  const { store, addHabit, removeHabit, toggleHabit, setMemo, deleteMemo, setSleep, updateFrequency, addQuickMemo, removeQuickMemo } = useHabitStore();
+  const { store, addHabit, removeHabit, toggleHabit, setMemo, deleteMemo, setSleep, updateFrequency, addQuickMemo, removeQuickMemo, updateQuickMemo } = useHabitStore();
   const {
     store: readingStore,
     addBook, updateBook, removeBook,
@@ -111,7 +111,7 @@ export default function Home() {
       case 'dashboard':
         return <Dashboard store={store} period={period} onPeriodChange={setPeriod} />;
       case 'diary':
-        return <DailyRecord store={store} onSave={setMemo} onDelete={deleteMemo} />;
+        return <DailyRecord store={store} onAdd={addQuickMemo} onUpdate={updateQuickMemo} onRemove={removeQuickMemo} />;
       case 'reading':
         return (
           <ReadingLog
