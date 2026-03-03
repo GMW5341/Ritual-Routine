@@ -34,7 +34,29 @@ function migrateStore(store: HabitStore): HabitStore {
     ...h,
     frequency: h.frequency || 'daily' as HabitFrequency,
   }));
-  return { ...store, habits };
+
+  // Migrate old memo (string) to quickMemos format
+  const records = store.records.map((r) => {
+    if (r.memo && r.memo.trim()) {
+      const alreadyMigrated = (r.quickMemos ?? []).some((m) => m.text === r.memo);
+      if (!alreadyMigrated) {
+        const migratedMemo: QuickMemo = {
+          id: uuidv4(),
+          text: r.memo,
+          createdAt: r.date + 'T09:00:00.000Z', // approximate time
+        };
+        return {
+          ...r,
+          quickMemos: [migratedMemo, ...(r.quickMemos ?? [])],
+          memo: undefined,
+        };
+      }
+      return { ...r, memo: undefined };
+    }
+    return r;
+  });
+
+  return { ...store, habits, records };
 }
 
 export function loadStore(): HabitStore {
